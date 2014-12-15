@@ -1,26 +1,22 @@
 package com.view;
 
-
-import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
 import com.controller.Controller;
 import com.model.*;
+import com.observer.Observer;
 
-public class Window extends JFrame {
+public class Window extends JFrame implements Observer{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 /********************** Attributes **********************/
 	
-	private MapPanel mapPanel;
-	private PublicPanel publicInfoPanel;
-	private PrivatePanel privatePanel;
+	private GlobalPanel globalPanel;
 	
-	BorderLayout layout;
 	
 /*********************** Methods ***********************/
 	public Window(GameManager gm, Controller c){
@@ -29,25 +25,24 @@ public class Window extends JFrame {
 		this.setLocationRelativeTo(null);
 		
 		this.setSize(800, 500);
-		this.setMinimumSize(new Dimension(700, 300));
+		this.setMinimumSize(new Dimension(700, 400));
 		
-		mapPanel = new MapPanel(gm.getMap(), c);
-		publicInfoPanel = new PublicPanel(gm.getPlayers());
-		privatePanel = new PrivatePanel(gm.getCurrentPlayer());
+		globalPanel = new GlobalPanel(gm, c);
 		
-		layout = new BorderLayout();
+		this.setContentPane(globalPanel);
 		
-		this.add(mapPanel, BorderLayout.CENTER);
-		this.add(publicInfoPanel, BorderLayout.EAST);
-		this.add(privatePanel, BorderLayout.WEST);
+		
 		
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 	}
 	
-	
-	public MapPanel getMapPanel(){
-		return mapPanel;
+	public void showTransitionPanel(boolean b){
+		globalPanel.showTransitionPanel(b);
 	}
 
+	public void update() {
+		this.repaint();
+	}
+	
 }

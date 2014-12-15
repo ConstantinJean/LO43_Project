@@ -8,9 +8,11 @@ import com.observer.*;
 public class Player implements Observable{
 
 /********************** Attributes **********************/
-	ArrayList<Observer> observers;
+	private ArrayList<Observer> observers;
 	
 	private String name;
+	
+	private int passageOrder;
 	
 //	private ArrayList<UV>
 	
@@ -24,7 +26,7 @@ public class Player implements Observable{
 /*********************** Methods ***********************/
 	public Player(String name){
 		this.name=name;
-		
+		passageOrder=0;
 		observers = new ArrayList<Observer>();
 		
 		ressourceCards = new ArrayList<RessourceCard>();
@@ -36,8 +38,16 @@ public class Player implements Observable{
 		haveTheOldestElder = false;
 	}
 	
+	
+	
 	public String getName(){
 		return name;
+	}
+	public void setPassageOrder(int i){
+		passageOrder = i;
+	}
+	public int getPassageOrder(){
+		return passageOrder;
 	}
 	public ArrayList<RessourceCard> getRessourceCards(){
 		return ressourceCards;

@@ -3,21 +3,17 @@ package com.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import com.controller.Controller;
 import com.model.*;
 import com.model.hexagon.*;
 import com.model.port.*;
-import com.observer.Observer;
 
-public class MapPanel extends JPanel  implements Observer{
+public class MapPanel extends JPanel{
 	/**
 	 * 
 	 */
@@ -25,7 +21,9 @@ public class MapPanel extends JPanel  implements Observer{
 /********************** Attributes **********************/
 	private Map map;
 	
-	private BufferedImage stickman;
+//	private ImageIcon stickman;
+	
+	private Object underMouseObj;
 	
 	
 	private static final double POINT_HIT_BOX = 0.3;
@@ -33,21 +31,29 @@ public class MapPanel extends JPanel  implements Observer{
 	private static final double HEXAGON_HIT_BOX = 1.0;
 
 /*********************** Methods ***********************/
+	
+	// ---- Constructor ----
 	public MapPanel(Map map, Controller controller){
 		super();
 		this.addMouseListener(controller);
+		this.addMouseMotionListener(controller);
 		this.setMinimumSize(new Dimension(100, 100));
+		
+		this.setPreferredSize(new Dimension(500, 300));
 		
 		this.map = map;
 		
-		stickman = null;
-		try{
-			stickman = ImageIO.read(new File("stickman.jpg"));
-		} catch(IOException e){
-			System.out.println("stickman exception");
-		}
+//		stickman = new ImageIcon("stickman.jpg");
+		
+//		stickman = null;
+//		try{
+//			stickman = ImageIO.read(new File("stickman.jpg"));
+//		} catch(IOException e){
+//			System.out.println("stickman exception");
+//		}
 	}
 	
+	// ---- method paintComponent ----
 	public void paintComponent(Graphics g){
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
@@ -86,12 +92,20 @@ public class MapPanel extends JPanel  implements Observer{
 					g.setColor(new Color(200, 200, 200));
 					break;
 				}
-				g.fillPolygon(xTab, yTab, 6);
 			}
 			else{
 				g.setColor(new Color(150, 150, 150));
+			}
+			g.fillPolygon(xTab, yTab, 6);
+			
+			
+			if(h == underMouseObj){
+				g.setColor(new Color(0, 0, 0, 100));
 				g.fillPolygon(xTab, yTab, 6);
-				
+			}
+			
+			
+			if(h.getClass() == ExternHexagon.class){
 				// draw the port
 				Port p = ((ExternHexagon)h).getPort();
 				if(p!=null){
@@ -119,10 +133,10 @@ public class MapPanel extends JPanel  implements Observer{
 							g.setColor(new Color(255, 255, 255));
 							break;
 						case COFFEE:
-							g.setColor(new Color(64, 28, 4));
+							g.setColor(new Color(128, 54, 8));
 							break;
 						case COURS:
-							g.setColor(new Color(14, 12, 64));
+							g.setColor(new Color(42, 36, 192));
 							break;
 						case FOOD:
 							g.setColor(new Color(213, 200, 0));
@@ -141,41 +155,59 @@ public class MapPanel extends JPanel  implements Observer{
 			
 			g.setColor(Color.RED);
 			//display the index of the hexagon
-			g.drawString(Integer.toString(map.getHexagones().indexOf(h)), xTab[0], yTab[5]);
-			//display the adjacent points number
-//			g.drawString(Integer.toString(h.getPoints().size()), xTab[0]+20, yTab[5]);
+//			g.drawString(Integer.toString(map.getHexagones().indexOf(h)), xTab[0], yTab[5]);
 			
 			//display the dice value
 			if(h.getClass() == com.model.hexagon.InternHexagon.class
 					&& ((InternHexagon)h).getDiceValue() != -1){
-				g.drawString(Integer.toString(((InternHexagon) h).getDiceValue()), xTab[1], yTab[5]);
+				int diceValue = ((InternHexagon) h).getDiceValue();
+				int fontSize = 20 - 2*Math.abs(7 - diceValue);
+				g.setFont(new Font("arial", Font.BOLD, fontSize));
+				g.drawString(Integer.toString(diceValue), (xTab[0]+xTab[1])/2, yTab[5]);
 			}
+			
 		}
 		
 		
 		// for each point
 		for(Point p : map.getPoints()){
 			g.setColor(Color.BLACK);
-			g.fillOval(convX(p.getX())-2, convY(p.getY())-2, 5, 5);
 			
-			g.setColor(Color.BLUE);
-			g.drawString(Integer.toString(map.getPoints().indexOf(p)), convX(p.getX()), convY(p.getY())-5);
+			if(p == underMouseObj)
+				g.fillOval(convX(p.getX())-5, convY(p.getY())-5, 10, 10);
+			else
+				g.fillOval(convX(p.getX())-3, convY(p.getY())-3, 6, 6);
+			
+			//display the index of the point
+//			g.setColor(Color.BLUE);
+//			g.drawString(Integer.toString(map.getPoints().indexOf(p)), convX(p.getX()), convY(p.getY())-5);
 		}
 		
 		// for each path
 		for(Path p : map.getPaths()){
 			//display the path
 			g.setColor(Color.BLACK);
-			g.drawLine(convX(p.getEnd().get(0).getX())
-					, convY(p.getEnd().get(0).getY())
-					, convX(p.getEnd().get(1).getX())
-					, convY(p.getEnd().get(1).getY()));
+			int x0 = convX(p.getEnd().get(0).getX());
+			int x1 = convX(p.getEnd().get(1).getX());
+			int y0 = convY(p.getEnd().get(0).getY());
+			int y1 = convY(p.getEnd().get(1).getY());
+			
+			if(p == underMouseObj){
+				g.drawLine(x0, y0+1, x1, y1+1);
+				g.drawLine(x0+1, y0, x1+1, y1);
+				g.drawLine(x0, y0, x1, y1);
+				g.drawLine(x0-1, y0, x1-1, y1);
+				g.drawLine(x0, y0-1, x1, y1-1);
+			}
+			else{
+				g.drawLine(x0, y0, x1, y1);
+			}
 			
 			//display the index of the path
-			g.setColor(Color.GREEN);
-			g.drawString(Integer.toString(map.getPaths().indexOf(p))
-					,(convX(p.getEnd().get(0).getX())+convX(p.getEnd().get(1).getX()))/2
-					,(convY(p.getEnd().get(0).getY())+convY(p.getEnd().get(1).getY()))/2);
+//			g.setColor(Color.GREEN);
+//			g.drawString(Integer.toString(map.getPaths().indexOf(p))
+//					,(convX(p.getEnd().get(0).getX())+convX(p.getEnd().get(1).getX()))/2
+//					,(convY(p.getEnd().get(0).getY())+convY(p.getEnd().get(1).getY()))/2);
 		}
 		
 		// draw the layabout mate
@@ -187,7 +219,6 @@ public class MapPanel extends JPanel  implements Observer{
 				, convX(xPos+1)-convX(xPos)
 				, convY(yPos+1)-convY(yPos));
 		
-		
 	}
 	
 	
@@ -198,11 +229,8 @@ public class MapPanel extends JPanel  implements Observer{
 		return (y+1)*getHeight()/16;
 	}
 
-	public void update() {
-		this.repaint();
-	}
 	public Object getObjectAt(java.awt.Point point){
-		int xPos = point.x - getX() + PrivatePanel.X_SIZE;
+		int xPos = point.x - getX() + LeftPanel.X_SIZE;
 		int yPos = point.y - getY();
 		
 		double caseW = getWidth()/24.0;
@@ -225,7 +253,7 @@ public class MapPanel extends JPanel  implements Observer{
 			if(nearPointDistance<POINT_HIT_BOX){
 				for(Point po : map.getPoints()){
 					if(po.getX() == nearPX && po.getY() == nearPY){
-							System.out.println("point " + map.getPoints().indexOf(po));
+//							System.out.println("point " + map.getPoints().indexOf(po));
 							return po;
 					}
 				}
@@ -237,7 +265,7 @@ public class MapPanel extends JPanel  implements Observer{
 				double pathCenterY = (pa.getEnd().get(0).getY() + pa.getEnd().get(1).getY())/2.0;
 				double pathDistance = Math.sqrt(Math.pow(pathCenterX-xPos/caseW, 2) + Math.pow(pathCenterY-yPos/caseH, 2));
 				if(pathDistance<PATH_HIT_BOX){
-					System.out.println("path " + map.getPaths().indexOf(pa));
+//					System.out.println("path " + map.getPaths().indexOf(pa));
 					return pa;
 				}
 			}
@@ -248,21 +276,20 @@ public class MapPanel extends JPanel  implements Observer{
 				double haxagonCenterY = h.getY()+1;
 				double pathDistance = Math.sqrt(Math.pow(hexagonCenterX-xPos/caseW, 2) + Math.pow(haxagonCenterY-yPos/caseH, 2));
 				if(pathDistance<HEXAGON_HIT_BOX){
-					System.out.println("hexagon " + map.getHexagones().indexOf(h));
+//					System.out.println("hexagon " + map.getHexagones().indexOf(h));
 					return h;
 				}
 			}
-			
-			
-			
-		
 		}
-		
-		
-		
 		return null;
 	}
 	
-	
+	public void mouseOver(java.awt.Point point){
+		Object newUnderMouseObj = getObjectAt(point);
+		if(newUnderMouseObj != underMouseObj){
+			underMouseObj = newUnderMouseObj;
+			this.repaint();
+		}
+	}
 	
 }

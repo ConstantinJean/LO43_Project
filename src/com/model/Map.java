@@ -8,7 +8,7 @@ import com.model.hexagon.*;
 import com.model.port.*;
 import com.observer.*;
 
-public class Map implements Observable {
+public class Map{
 	
 /********************** Attributes **********************/
 	private ArrayList<Observer> observers;
@@ -242,20 +242,4 @@ public class Map implements Observable {
 		return layaboutmate;
 	}
 	
-	
-	/* observable methods */
-	public void addObserver(Observer obs) {
-		observers.add(obs);
-		
-	}
-
-	public void removeObservers() {
-		observers = new ArrayList<Observer>();
-	}
-	
-	public void UpdateObserver() {
-		for(Observer o : observers){
-			o.update();
-		}
-	}
 }

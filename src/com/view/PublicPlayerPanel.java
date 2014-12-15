@@ -15,7 +15,6 @@ public class PublicPlayerPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 /********************** Attributes **********************/
-	public static final int X_SIZE = 150;
 	
 	private Player player;
 	
@@ -25,7 +24,6 @@ public class PublicPlayerPanel extends JPanel {
 		super();
 		
 		this.player = player;
-		this.setPreferredSize(new Dimension(X_SIZE, 0));// the 2nd argument doesn't change anything
 	}
 	
 	public void paintComponent(Graphics g){
