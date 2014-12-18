@@ -7,9 +7,9 @@ import com.model.Point;
 public abstract class Hexagon {
 
 /********************** Attributes **********************/
-	private int x, y;
+	protected int x, y;
 	
-	private ArrayList<Point> points;
+	protected ArrayList<Point> points;
 	
 	
 	

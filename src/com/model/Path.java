@@ -7,6 +7,8 @@ public class Path {
 /********************** Attributes **********************/
 	private ArrayList<Point> end;
 	
+	private CC CC;
+	
 /*********************** Methods ***********************/	
 	public Path(Point p1, Point p2){
 		end = new ArrayList<Point>();
@@ -16,5 +18,12 @@ public class Path {
 	
 	public ArrayList<Point> getEnd(){
 		return end;
+	}
+	
+	public CC getCC(){
+		return CC;
+	}
+	public void setCC(CC CC){
+		this.CC = CC;
 	}
 }

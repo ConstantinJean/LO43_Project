@@ -110,8 +110,10 @@ public class MapPanel extends JPanel{
 				Port p = ((ExternHexagon)h).getPort();
 				if(p!=null){
 					g.setColor(Color.RED);
-					g.fillOval((convX(h.getX())*2+convX(h.getX()+1))/3
-							, (convY(h.getY())*2+convY(h.getY()+1))/3
+					
+					
+					g.fillOval((convX(h.getX())*3+convX(h.getX()+2))/4
+							, (convY(h.getY())*3+convY(h.getY()+2))/4
 							, convX(h.getX()+1)-convX(h.getX())
 							, convY(h.getY()+1)-convY(h.getY()));
 					
@@ -145,8 +147,10 @@ public class MapPanel extends JPanel{
 							g.setColor(new Color(200, 200, 200));
 							break;
 						}
-						g.fillOval((convX(h.getX())*2+convX(h.getX()+1))/3 +5
-								, (convY(h.getY())*2+convY(h.getY()+1))/3 +5
+						
+						
+						g.fillOval((convX(h.getX())*3+convX(h.getX()+2))/4 +5
+								, (convY(h.getY())*3+convY(h.getY()+2))/4 +5
 								, convX(h.getX()+1)-convX(h.getX()) -10
 								, convY(h.getY()+1)-convY(h.getY()) -10);
 					}
@@ -169,53 +173,92 @@ public class MapPanel extends JPanel{
 		}
 		
 		
+		
+		// for each path
+		for(Path p : map.getPaths()){
+			//display the path
+			int x0 = convX(p.getEnd().get(0).getX());
+				int x1 = convX(p.getEnd().get(1).getX());
+				int y0 = convY(p.getEnd().get(0).getY());
+				int y1 = convY(p.getEnd().get(1).getY());
+			
+			if(p.getCC() == null){
+				g.setColor(Color.BLACK);
+			
+				if(p == underMouseObj){
+					for(int i=-1 ; i<1 ; i++)
+						for(int j=-1 ; j<1 ; j++)
+							g.drawLine(x0+i, y0+j, x1+i, y1+j);
+				}
+				else{
+					g.drawLine(x0, y0, x1, y1);
+				}
+			}
+			else{
+				g.setColor(p.getCC().getPlayer().getColor());
+				
+				if(p == underMouseObj){
+					for(int i=-2 ; i<2 ; i++){
+						for(int j=-2 ; j<2 ; j++){
+							g.drawLine(x0+i, y0+j, x1+i, y1+j);
+						}
+					}
+				}
+				else{
+					for(int i=-1 ; i<1 ; i++){
+						for(int j=-1 ; j<1 ; j++){
+							g.drawLine(x0+i, y0+j, x1+i, y1+j);
+						}
+					}
+				}
+				
+			}
+			
+			
+			//display the index of the path
+//					g.setColor(Color.GREEN);
+//					g.drawString(Integer.toString(map.getPaths().indexOf(p))
+//							,(convX(p.getEnd().get(0).getX())+convX(p.getEnd().get(1).getX()))/2
+//							,(convY(p.getEnd().get(0).getY())+convY(p.getEnd().get(1).getY()))/2);
+		}
+		
+		
+		
+		
+		
+		
 		// for each point
 		for(Point p : map.getPoints()){
-			g.setColor(Color.BLACK);
-			
-			if(p == underMouseObj)
-				g.fillOval(convX(p.getX())-5, convY(p.getY())-5, 10, 10);
-			else
-				g.fillOval(convX(p.getX())-3, convY(p.getY())-3, 6, 6);
+			if(p.getUV() == null){
+				g.setColor(Color.BLACK);
+				
+				if(p == underMouseObj)
+					g.fillOval(convX(p.getX())-5, convY(p.getY())-5, 10, 10);
+				else
+					g.fillOval(convX(p.getX())-3, convY(p.getY())-3, 6, 6);
+			}
+			else{
+				g.setColor(p.getUV().getPlayer().getColor());
+				if(p == underMouseObj)
+					g.fillRect(convX(p.getX())-7, convY(p.getY())-7, 14, 14);
+				else
+					g.fillRect(convX(p.getX())-5, convY(p.getY())-5, 10, 10);
+			}
 			
 			//display the index of the point
 //			g.setColor(Color.BLUE);
 //			g.drawString(Integer.toString(map.getPoints().indexOf(p)), convX(p.getX()), convY(p.getY())-5);
 		}
 		
-		// for each path
-		for(Path p : map.getPaths()){
-			//display the path
-			g.setColor(Color.BLACK);
-			int x0 = convX(p.getEnd().get(0).getX());
-			int x1 = convX(p.getEnd().get(1).getX());
-			int y0 = convY(p.getEnd().get(0).getY());
-			int y1 = convY(p.getEnd().get(1).getY());
-			
-			if(p == underMouseObj){
-				g.drawLine(x0, y0+1, x1, y1+1);
-				g.drawLine(x0+1, y0, x1+1, y1);
-				g.drawLine(x0, y0, x1, y1);
-				g.drawLine(x0-1, y0, x1-1, y1);
-				g.drawLine(x0, y0-1, x1, y1-1);
-			}
-			else{
-				g.drawLine(x0, y0, x1, y1);
-			}
-			
-			//display the index of the path
-//			g.setColor(Color.GREEN);
-//			g.drawString(Integer.toString(map.getPaths().indexOf(p))
-//					,(convX(p.getEnd().get(0).getX())+convX(p.getEnd().get(1).getX()))/2
-//					,(convY(p.getEnd().get(0).getY())+convY(p.getEnd().get(1).getY()))/2);
-		}
+		
 		
 		// draw the layabout mate
 		g.setColor(Color.BLACK);
 		int xPos = map.getLayaboutMate().getPos().getX();
 		int yPos = map.getLayaboutMate().getPos().getY();
-		g.fillOval((convX(xPos)*2+convX(xPos+1))/3
-				, (convY(yPos)*2+convY(yPos+1))/3
+		
+		g.fillOval((convX(xPos)*3+convX(xPos+2))/4
+				, (convY(yPos)*3+convY(yPos+2))/4
 				, convX(xPos+1)-convX(xPos)
 				, convY(yPos+1)-convY(yPos));
 		
@@ -229,7 +272,7 @@ public class MapPanel extends JPanel{
 		return (y+1)*getHeight()/16;
 	}
 
-	public Object getObjectAt(java.awt.Point point){
+	private Object getObjectAt(java.awt.Point point){
 		int xPos = point.x - getX() + LeftPanel.X_SIZE;
 		int yPos = point.y - getY();
 		
@@ -290,6 +333,12 @@ public class MapPanel extends JPanel{
 			underMouseObj = newUnderMouseObj;
 			this.repaint();
 		}
+	}
+	
+	
+	
+	public Object getUnderMouseObject(){
+		return underMouseObj;
 	}
 	
 }

@@ -27,7 +27,7 @@ public class PublicPlayerPanel extends JPanel {
 	}
 	
 	public void paintComponent(Graphics g){
-		g.setColor(Color.YELLOW);
+		g.setColor(player.getColor());
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		g.setColor(Color.BLACK);
 		g.drawString(player.getName(), 2, 12);

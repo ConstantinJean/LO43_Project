@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Stack;
 
+import com.model.card.RessourceCard;
 import com.model.hexagon.*;
 import com.model.port.*;
-import com.observer.*;
 
 public class Map{
 	
 /********************** Attributes **********************/
-	private ArrayList<Observer> observers;
 	
 	private ArrayList<Hexagon> hexagons;
 	private ArrayList<Point> points;
@@ -22,7 +21,6 @@ public class Map{
 /*********************** Methods ***********************/
 	public Map(){
 		//--- Initialisation of attributes ---
-		observers = new ArrayList<Observer>();
 		
 		hexagons = new ArrayList<Hexagon>();
 		points = new ArrayList<Point>();
@@ -224,8 +222,29 @@ public class Map{
 	}
 	
 	
+	public void produceRessources(int diceValue){
+		System.out.println("map production "+diceValue);
+		for(Hexagon he : hexagons){
+			if(he.getClass() == InternHexagon.class){
+				if(((InternHexagon)he).getDiceValue() == diceValue)
+					((InternHexagon)he).produceRessources();
+			}
+		}
+	}
 	
 	
+	public void giveInitialRessources(UV uv){
+		for(Hexagon he : hexagons){
+			if(he.getClass() == InternHexagon.class){
+				for(Point po : he.getPoints()){
+					if(po.getUV() == uv){
+						RessourceCard newCard = new RessourceCard(((InternHexagon)he).getRessource());
+						uv.getPlayer().getRessourceCards().add(newCard);
+					}
+				}
+			}
+		}
+	}
 	
 	/*getters and setters*/
 	

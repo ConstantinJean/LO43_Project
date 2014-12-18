@@ -17,6 +17,8 @@ public class Window extends JFrame implements Observer{
 	
 	private GlobalPanel globalPanel;
 	
+	private LogPanel logPanel;
+	
 	
 /*********************** Methods ***********************/
 	public Window(GameManager gm, Controller c){
@@ -24,10 +26,11 @@ public class Window extends JFrame implements Observer{
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		
-		this.setSize(800, 500);
+		this.setSize(1000, 700);
 		this.setMinimumSize(new Dimension(700, 400));
 		
 		globalPanel = new GlobalPanel(gm, c);
+		logPanel = globalPanel.getLogPanel();
 		
 		this.setContentPane(globalPanel);
 		
@@ -37,11 +40,27 @@ public class Window extends JFrame implements Observer{
 		this.setVisible(true);
 	}
 	
-	public void showTransitionPanel(boolean b){
-		globalPanel.showTransitionPanel(b);
+	private void showTransitionPanel(){
+		globalPanel.showTransitionPanel();
+	}
+	private void showMainPanel(){
+		globalPanel.showMainPanel();
 	}
 
-	public void update() {
+	public void update(String msg) {
+		
+		if(msg.equals("trans")){
+			showTransitionPanel();
+		}
+		else{
+			showMainPanel();
+		
+			if(!logPanel.getText().equals(msg)){
+				logPanel.setText(msg);
+			}
+			System.out.println(logPanel.getText());
+		}
+		
 		this.repaint();
 	}
 	

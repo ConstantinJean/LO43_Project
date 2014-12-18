@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import com.model.Player;
 import com.observer.Observer;
 
-public class RightPanel extends JPanel implements Observer{
+public class RightPanel extends JPanel{
 
 	/**
 	 * 
@@ -51,16 +51,14 @@ public class RightPanel extends JPanel implements Observer{
 	
 	
 	public void paintComponent(Graphics g){
-		g.setColor(Color.CYAN);
+		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		
 	}
-
-
 	
-	public void update() {
-		this.repaint();
+	public LogPanel getLogPanel(){
+		return logPanel;
 	}
-	
-	
+
+
 }

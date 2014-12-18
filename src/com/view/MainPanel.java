@@ -28,7 +28,7 @@ public class MainPanel extends JPanel{
 		
 		mapPanel = new MapPanel(gm.getMap(), c);
 		publicInfoPanel = new RightPanel(gm.getPlayers());
-		privatePanel = new LeftPanel(gm);
+		privatePanel = new LeftPanel(gm, c);
 		
 		layout = new BorderLayout();
 		setLayout(layout);
@@ -41,5 +41,10 @@ public class MainPanel extends JPanel{
 	public void paintComponent(Graphics g){
 		g.setColor(Color.BLUE);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
+	}
+	
+	
+	public LogPanel getLogPanel(){
+		return publicInfoPanel.getLogPanel();
 	}
 }

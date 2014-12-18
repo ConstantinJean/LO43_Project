@@ -9,11 +9,14 @@ public class Point {
 	
 	private ArrayList<Point> adjPoints;
 	
+	private UV UV;
+	
 /*********************** Methods ***********************/
 	public Point(int x, int y){
 		this.x = x;
 		this.y = y;
 		adjPoints = new ArrayList<Point>();
+		UV = null;
 	}
 
 	public int getX() {
@@ -22,6 +25,13 @@ public class Point {
 	
 	public int getY() {
 		return y;
+	}
+	
+	public UV getUV(){
+		return UV;
+	}
+	public void setUV(UV UV){
+		this.UV = UV;
 	}
 	
 	public void addAdjPoint(Point p){
