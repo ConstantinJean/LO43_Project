@@ -9,6 +9,7 @@
 .settings/
 *.ini
 bin/
+.metadata
 
 # Package Files #
 *.jar
