@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 import com.controller.Controller;
 import com.observer.Observable;
 import com.observer.Observer;
-import com.view.PlayerColor;
+import com.view.ColorConstants;
 import com.view.Window;
 
 public class GameManager implements Observable{
@@ -41,7 +41,7 @@ public class GameManager implements Observable{
 	
 	// ---- Main ----
 	public static void main(String[] args) {
-		GameManager gm = new GameManager(2);
+		GameManager gm = new GameManager(4);
 		Controller c = new Controller(gm);
 		Window w = new Window(gm, c);
 		
@@ -60,16 +60,16 @@ public class GameManager implements Observable{
 		for(int i=0 ; i<nbPlayer ; i++){
 			switch(i){
 			case 0:
-				players.add(new Player("Player "+ (i+1), new Color(PlayerColor.p1R, PlayerColor.p1G, PlayerColor.p1B)));
+				players.add(new Player("Player "+ (i+1), new Color(ColorConstants.p1R, ColorConstants.p1G, ColorConstants.p1B)));
 				break;
 			case 1:
-				players.add(new Player("Player "+ (i+1), new Color(PlayerColor.p2R, PlayerColor.p2G, PlayerColor.p2B)));
+				players.add(new Player("Player "+ (i+1), new Color(ColorConstants.p2R, ColorConstants.p2G, ColorConstants.p2B)));
 				break;
 			case 2:
-				players.add(new Player("Player "+ (i+1), new Color(PlayerColor.p3R, PlayerColor.p3G, PlayerColor.p3B)));
+				players.add(new Player("Player "+ (i+1), new Color(ColorConstants.p3R, ColorConstants.p3G, ColorConstants.p3B)));
 				break;
 			case 3:
-				players.add(new Player("Player "+ (i+1), new Color(PlayerColor.p4R, PlayerColor.p4G, PlayerColor.p4B)));
+				players.add(new Player("Player "+ (i+1), new Color(ColorConstants.p4R, ColorConstants.p4G, ColorConstants.p4B)));
 				break;
 			default :
 				players.add(new Player("Player "+ (i+1), Color.WHITE));

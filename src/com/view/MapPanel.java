@@ -74,22 +74,22 @@ public class MapPanel extends JPanel{
 			if(h.getClass() == InternHexagon.class){
 				switch(((InternHexagon) h).getRessource()){
 				case BEER:
-					g.setColor(new Color(255, 204, 102));
+					g.setColor(new Color(ColorConstants.BeerR, ColorConstants.BeerG, ColorConstants.BeerB));
 					break;
 				case SLEEP:
-					g.setColor(new Color(255, 255, 255));
+					g.setColor(new Color(ColorConstants.SleepR, ColorConstants.SleepG, ColorConstants.SleepB));
 					break;
 				case COFFEE:
-					g.setColor(new Color(64, 28, 4));
+					g.setColor(new Color(ColorConstants.CoffeeR, ColorConstants.CoffeeG, ColorConstants.CoffeeB));
 					break;
 				case COURS:
-					g.setColor(new Color(19, 17, 84));
+					g.setColor(new Color(ColorConstants.CoursR, ColorConstants.CoursG, ColorConstants.CoursB));
 					break;
 				case FOOD:
-					g.setColor(new Color(213, 200, 0));
+					g.setColor(new Color(ColorConstants.FoodR, ColorConstants.FoodG, ColorConstants.FoodB));
 					break;
 				case NO_RESSOURCE:
-					g.setColor(new Color(200, 200, 200));
+					g.setColor(new Color(ColorConstants.NoRessourceR, ColorConstants.NoRessourceG, ColorConstants.NoRessourceB));
 					break;
 				}
 			}
@@ -129,22 +129,19 @@ public class MapPanel extends JPanel{
 						Ressource r = ((SpecifiedPort)p).getRessourceType();
 						switch(r){
 						case BEER:
-							g.setColor(new Color(255, 204, 102));
+							g.setColor(new Color(ColorConstants.BeerR, ColorConstants.BeerG, ColorConstants.BeerB));
 							break;
 						case SLEEP:
-							g.setColor(new Color(255, 255, 255));
+							g.setColor(new Color(ColorConstants.SleepR, ColorConstants.SleepG, ColorConstants.SleepB));
 							break;
 						case COFFEE:
-							g.setColor(new Color(128, 54, 8));
+							g.setColor(new Color(ColorConstants.CoffeeR, ColorConstants.CoffeeG, ColorConstants.CoffeeB));
 							break;
 						case COURS:
-							g.setColor(new Color(42, 36, 192));
+							g.setColor(new Color(ColorConstants.CoursR, ColorConstants.CoursG, ColorConstants.CoursB));
 							break;
 						case FOOD:
-							g.setColor(new Color(213, 200, 0));
-							break;
-						case NO_RESSOURCE:
-							g.setColor(new Color(200, 200, 200));
+							g.setColor(new Color(ColorConstants.FoodR, ColorConstants.FoodG, ColorConstants.FoodB));
 							break;
 						}
 						
