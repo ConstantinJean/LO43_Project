@@ -1,0 +1,2 @@
+INDEX VERSION 1.126+C:\Users\Léo\Documents\GitHub\.metadata\.plugins\org.eclipse.jdt.core
+1619310593.index
