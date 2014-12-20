@@ -33,7 +33,7 @@ public class Controller implements MouseListener, ActionListener, MouseMotionLis
 			break;
 		case "NEXT_TURN":
 			if(gm.canEndTurn()){
-				gm.next();
+				gm.nextTurn();
 			}
 			break;
 		}

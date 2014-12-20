@@ -20,17 +20,17 @@ public class Map{
 	
 /*********************** Methods ***********************/
 	public Map(){
-		//--- Initialisation of attributes ---
-		
+		// initialisation des attributs
 		hexagons = new ArrayList<Hexagon>();
 		points = new ArrayList<Point>();
 		paths = new ArrayList<Path>();
 		
 		layaboutmate = new LayaboutMate();
 		
-		//--- placement and initialisation of hexagons ---
-		int x, y;
+		//création et placement des hexagons :
 		
+		int x, y;
+		// on crée un stack qui contient les différentes valeurs de dés possibles
 		Stack<Integer> diceValue = new Stack<Integer>();
 		diceValue.push(-1); //desert
 		diceValue.push(2);
@@ -46,6 +46,7 @@ public class Map{
 		}
 		diceValue.push(12);
 		
+		// on fait de meme pour les types de ressource
 		Stack<Ressource> ressource = new Stack<Ressource>();
 		for(int i=0 ; i<4 ; i++){
 			ressource.add(Ressource.BEER);
@@ -57,16 +58,22 @@ public class Map{
 			ressource.add(Ressource.FOOD);
 		}
 		
+		// on mélange ces stack
 		Collections.shuffle(diceValue);
 		Collections.shuffle(ressource);
 		
-		//placement of intern hexagons
+		
+		// puis on place les hexagones internes en se servant dans ces stacks
+		InternHexagon newHexa;
+		int diceV = 0;
+		Ressource ressourceV;
+		
+		// placement des 5 hexagones de la colone centrale
 		x=10;
 		for(y=2 ; y<=10 ; y+=2){
-			InternHexagon newHexa;
-			int diceV = diceValue.pop();
+			diceV = diceValue.pop();
 			if(diceV != -1){
-				Ressource ressourceV = ressource.pop();
+				ressourceV = ressource.pop();
 				newHexa = new InternHexagon(x, y, diceV, ressourceV);
 			}
 			else{
@@ -75,12 +82,12 @@ public class Map{
 			}
 			hexagons.add(newHexa);
 		}
+		// placement des 2 colones de 4 hexagones
 		for(x=7 ; x<=13 ; x+=6){
 			for(y=3 ; y<=9 ; y+=2){
-				InternHexagon newHexa;
-				int diceV = diceValue.pop();
+				diceV = diceValue.pop();
 				if(diceV != -1){
-					Ressource ressourceV = ressource.pop();
+					ressourceV = ressource.pop();
 					newHexa = new InternHexagon(x, y, diceV, ressourceV);
 				}
 				else{
@@ -90,12 +97,12 @@ public class Map{
 				hexagons.add(newHexa);
 			}
 		}
+		// placement des 2 dernières colones de 3 hexagones
 		for(x=4 ; x<=16 ; x+=12){
 			for(y=4 ; y<=8 ; y+=2){
-				InternHexagon newHexa;
-				int diceV = diceValue.pop();
+				diceV = diceValue.pop();
 				if(diceV != -1){
-					Ressource ressourceV = ressource.pop();
+					ressourceV = ressource.pop();
 					newHexa = new InternHexagon(x, y, diceV, ressourceV);
 				}
 				else{
@@ -106,11 +113,14 @@ public class Map{
 			}
 		}
 		
-		// placement of points
+		// placement des points :
+		// on parcours toutes les coordonnées de la map
 		for(y=0 ; y<=14 ; y++){
 			for(x=0 ; x<=22 ; x++){
 				boolean pointCreated = false;
+				// et on parcours tous les exagones crées (les hexagones internes)
 				for(Hexagon h : hexagons){
+					// on ajoute un point si la coordonné est situé sur le sommet d'un hexagone
 					if(x == h.getX()-1 && y == h.getY()+1
 						|| x == h.getX() && (y == h.getY() || y == h.getY()+2)
 						|| x == h.getX()+2 && (y == h.getY() || y == h.getY()+2)
@@ -130,18 +140,23 @@ public class Map{
 			}
 		}
 		
-		// placement of paths
+		// Création des path :
+		// on parcours tous les points crées
 		for(Point p1 : points){
 			int x1=p1.getX(), y1=p1.getY();
+			// puis, pour chacun de ces points on parcours encore tous les point
 			for(Point p2 : points){
 				int x2 = p2.getX(), y2 = p2.getY();
+				// on regarde si les 2 points sont adjacent du point de vu des hexagones
 				if(x2==x1-2 && y2==y1
 					|| x2==x1-1 && (y2==y1-1 || y2==y1+1)
 					|| x2==x1+1 && (y2==y1-1 || y2==y1+1)
 					|| x2==x1+2 && y2==y1
 					){
-						p1.addAdjPoint(p2);
-						
+					
+					p1.addAdjPoint(p2);
+					
+					// on crée le path selement si x1<x2 pour éviter de créer tous les points en double
 					if(x1 < x2){
 						paths.add(new Path(p1, p2));
 					}
@@ -149,7 +164,8 @@ public class Map{
 			}
 		}
 		
-		//placement of extern hexagons
+		// placement des hexagones externes:
+		// on les places par groupe de 3, en tournant dans le sens des aiguilles d'une montre
 		for(x=10, y=0 ; y<=2 ; x+=3, y+=1){
 			hexagons.add(new ExternHexagon(x, y));
 		}
@@ -169,7 +185,7 @@ public class Map{
 			hexagons.add(new ExternHexagon(x, y));
 		}
 		
-		// we add the points on the new extern hexagons
+		// on ajoute les points adjacents aux hexagones externes
 		for(Point p : points){
 			for(Hexagon h : hexagons){
 				if(h.getClass() == ExternHexagon.class){
@@ -184,8 +200,8 @@ public class Map{
 			}
 		}
 		
-		//placement of ports
-		
+		// placement des port
+		// on utilise encore la methode du stack que l'on mélange
 		Stack<Ressource> portTypeList = new Stack<Ressource>();
 		portTypeList.push(Ressource.BEER);
 		portTypeList.push(Ressource.SLEEP);
@@ -197,8 +213,10 @@ public class Map{
 		}
 		Collections.shuffle(portTypeList);
 		
+		// on prend 1 hexagone extern sur 2
 		for(Hexagon h : hexagons){
 			if(h.getClass() == ExternHexagon.class && hexagons.indexOf(h)%2 == 0){
+				// le port et relié a 2 points
 				Point p1, p2;
 				Ressource portType = portTypeList.pop();
 				if(h.getPoints().size()==2){
@@ -221,9 +239,8 @@ public class Map{
 		}
 	}
 	
-	
+	// cette methode permer a la map de produire des ressources pour une valeur de dés donnée
 	public void produceRessources(int diceValue){
-		System.out.println("map production "+diceValue);
 		for(Hexagon he : hexagons){
 			if(he.getClass() == InternHexagon.class){
 				if(((InternHexagon)he).getDiceValue() == diceValue)
@@ -232,7 +249,8 @@ public class Map{
 		}
 	}
 	
-	
+	// cette methode est utilisée lors du deuxième tour la phase de placement
+	// elle permet de donner une ressource de chaque hexagone adgacent a une UV
 	public void giveInitialRessources(UV uv){
 		for(Hexagon he : hexagons){
 			if(he.getClass() == InternHexagon.class){
@@ -246,7 +264,7 @@ public class Map{
 		}
 	}
 	
-	/*getters and setters*/
+	// ----getters and setters ----
 	
 	public ArrayList<Hexagon> getHexagones(){
 		return hexagons;

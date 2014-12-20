@@ -9,9 +9,7 @@ import javax.swing.JPanel;
 
 import com.controller.Controller;
 import com.model.GameManager;
-import com.model.Player;
 import com.model.Ressource;
-import com.observer.Observer;
 
 public class LeftPanel extends JPanel{
 	/**

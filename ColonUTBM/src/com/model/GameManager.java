@@ -3,7 +3,6 @@ package com.model;
 import java.awt.Color;
 import java.util.ArrayList;
 
-import javax.swing.Icon;
 import javax.swing.JOptionPane;
 
 import com.controller.Controller;
@@ -21,8 +20,9 @@ public class GameManager implements Observable{
 	private ArrayList<Player> players;
 	private int nbPlayer;
 	
+	
+	//Ces attributs permettent au game manager de se situer dans la partie
 	private int currentTurn;
-	private boolean devCardPlayed;
 	private int diceValue;
 	
 	private Player currentPlayer;
@@ -31,6 +31,7 @@ public class GameManager implements Observable{
 	private boolean placingUVplus;
 	private boolean placingCC;
 	private boolean rollingDice;
+	private boolean devCardPlayed;
 	private boolean movingLayaboutMate;
 	private boolean canEndTurn;
 	private Object lastObjectPlaced;
@@ -51,12 +52,16 @@ public class GameManager implements Observable{
 	
 	// ---- Contructor ----
 	public GameManager(int nbPlayer){
+		// Le gameManager implemente l'interface Observable
+		// on pourra donc mettre a jour ses observer depuis la fonction updateOberserver
 		observers = new ArrayList<Observer>();
 		
+		// Initialisation de la map et des joueurs
 		map = new Map();
 		players = new ArrayList<Player>();
 		this.nbPlayer = nbPlayer;
 		
+		// On crée les joueurs, on leur ajoute chacun un nom et une couleur
 		for(int i=0 ; i<nbPlayer ; i++){
 			switch(i){
 			case 0:
@@ -80,7 +85,7 @@ public class GameManager implements Observable{
 			
 		}
 		
-		
+		// Initialisation des autres variables
 		currentTurn = 0;
 		currentPlayer = players.get(0);
 		devCardPlayed = false;
@@ -98,14 +103,12 @@ public class GameManager implements Observable{
 	
 	// ---- function to start the game ----
 	public void startGame(){
-		
+		// C'est le premier tour de jeu
 		currentTurn = 1;
 		
+		// On tire aléatoirement l'ordre de passage
 		int rand = (int)(Math.random()*nbPlayer);
 		int order=0;
-		currentPlayer = players.get(rand);
-		// Initialization of the passage order of all the player
-		players.get(rand).setPassageOrder(rand);
 		for(int i=rand ; i<nbPlayer ; i++){
 			players.get(i).setPassageOrder(order);
 			order++;
@@ -114,94 +117,98 @@ public class GameManager implements Observable{
 			players.get(i).setPassageOrder(order);
 			order++;
 		}
+		currentPlayer = players.get(rand);
 		
 		UpdateObserver("the first player is "+ currentPlayer.getName()+ ", clic on a point to place an UV");
 		placingUV = true;
-		
 	}
 	
-	
+	// Cette fonction sera appelé par le controller a chaque fois que l'action en cours sera terminé
+	// Elle permet au game manager de savoir quelle sera l'action suivant.
 	public void next(){
 		
 		if(placementPhase){
 			if(placingUV){
+				// si on est dans la phase de placement et qu'on vient de placer une UV :
 				placingUV = false;
-				
+				// si on est dans le deuxième tour de table alors le joueur gagne des ressources
 				if(currentTurn>nbPlayer){
 					map.giveInitialRessources((UV)lastObjectPlaced);
 				}
-				
+				// la prochaine action sera de placer un CC
 				placingCC = true;
 				UpdateObserver("now clic on a path to place a CC");
 			}
 			else if(placingCC){
+				// si on était en phase de placement et qu'on vient de placer un CC :
 				placingCC = false;
-				
+				// si la phase de placement continue :
 				if(currentTurn<nbPlayer*2){
+					// si on est dans le premier tour de table, on passe au joueur suivant
 					if(currentTurn < nbPlayer){
 						nextPlayer();
 					}
+					// sinon on revient au joueur précédant
 					else if(currentTurn > nbPlayer){
 						precedentPlayer();
 					}
 					currentTurn++;
 					
+					// Ce joueur pourra placer une UV
 					placingUV = true;
 					UpdateObserver(currentPlayer.getName() + ", clic on a point to place an UV");
 				}
+				// si on vient de terminer la phase de placement :
 				else{
 					placementPhase = false;
+					// on affiche le panel de transition et on passe au tour suivant
 					UpdateObserver("trans");
 					currentTurn ++;
 				}
 			}
 		}
-		else{// if not placement phase
+		// si on est pas dans la phase de placement :
+		else{
+			// si on vient de lancer les dés
 			if(rollingDice){
 				rollingDice = false;
+				// on calcul le lancé
 				int d1 = (int)(Math.random()*6+1), d2 = (int)(Math.random()*6+1);
 				diceValue = d1+d2;
+				// si on a obtenu 7, la map produit des ressources
 				if(diceValue != 7){
 					map.produceRessources(diceValue);
 					UpdateObserver("Dice value : "+diceValue+" ("+d1+"+"+d2+")");
 					canEndTurn = true;
 				}
+				// sinon le joueur déplace le binome glandeur
 				else{
 					movingLayaboutMate = true;
 					UpdateObserver("Dice value : "+diceValue+" ("+d1+"+"+d2+"), click on an hexagon to move the layaboute mate");
 				}
 			}
-			else if(canEndTurn){
-				canEndTurn = false;
-				nextPlayer();
-				UpdateObserver("trans");
-				
-			}
+			// si le joueur vient de déplacer le binome glandeur
 			else if(movingLayaboutMate){
 				movingLayaboutMate = false;
-				
-				ArrayList<Object> targets = new ArrayList<Object>();
-				for(Point po : map.getLayaboutMate().getPos().getPoints()){
-					if(po.getUV() != null){
-						if(!targets.contains(po.getUV().getPlayer()))
-							targets.add(po.getUV().getPlayer().getName());
-					}
-				}
-				String target = (String)JOptionPane.showInputDialog(null
-						, "chose your target"
-						, "target"
-						, JOptionPane.PLAIN_MESSAGE
-						, null
-						, targets.toArray()
-						, "name");
-				System.out.println(target);
+				//on vole un joueur
+				steal();
+				canEndTurn = true;
 			}
+			// si on vient de commencer le tour d'un joueur :
 			else{
 				canEndTurn = false;
-				UpdateObserver(currentPlayer.getName() + ", click to roll dice");
+				// ce joueur peux lancer les dés
 				rollingDice = true;
+				UpdateObserver(currentPlayer.getName() + ", click to roll dice");
 			}
 		}
+	}
+	
+	// c'est la methode qui est appelé quand on appuis sur le bouton "next turn"
+	public void nextTurn(){
+		canEndTurn = false;
+		nextPlayer();
+		UpdateObserver("trans");
 	}
 	
 	
@@ -209,11 +216,27 @@ public class GameManager implements Observable{
 	
 	
 	
+	// ---- methodes privées ----
+	private void steal(){ // a finir !!!!!!!!
+		ArrayList<Object> targets = new ArrayList<Object>();
+		for(Point po : map.getLayaboutMate().getPos().getPoints()){
+			if(po.getUV() != null){
+				if(!targets.contains(po.getUV().getPlayer())){
+					targets.add(po.getUV().getPlayer().getName());
+				}
+			}
+		}
+		String target = (String)JOptionPane.showInputDialog(null
+				, "chose your target"
+				, "target"
+				, JOptionPane.PLAIN_MESSAGE
+				, null
+				, targets.toArray()
+				, "name");
+		System.out.println(target);
+	}
 	
-	
-	
-	
-	
+	//le current player passe au joueur suivant
 	private void nextPlayer(){
 		if(currentPlayer == players.get(nbPlayer-1)){
 			currentPlayer = players.get(0);
@@ -222,6 +245,8 @@ public class GameManager implements Observable{
 			currentPlayer = players.get(players.indexOf(currentPlayer)+1);
 		}
 	}
+	
+	//le current player passe au joueur précedant
 	private void precedentPlayer(){
 		if(players.indexOf(currentPlayer)==0){
 			currentPlayer = players.get(nbPlayer-1);
@@ -231,7 +256,7 @@ public class GameManager implements Observable{
 		}
 	}
 	
-	
+	// ---- getters and setters ----
 	public Map getMap(){
 		return map;
 	}
@@ -277,7 +302,7 @@ public class GameManager implements Observable{
 
 	
 	
-	
+	// ---- fonctions de l'interface observable ----
 	public void addObserver(Observer obs) {
 		observers.add(obs);
 	}
