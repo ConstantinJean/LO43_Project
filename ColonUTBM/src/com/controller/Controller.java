@@ -61,7 +61,7 @@ public class Controller implements MouseListener, ActionListener, MouseMotionLis
 							gm.getCurrentPlayer().addUV(newUV);
 							gm.setLastObjectPlaced(newUV);
 							
-							gm.next();
+							gm.nextAction();
 						}
 						else{
 							gm.UpdateObserver("you can't place an UV near an other UV");
@@ -85,7 +85,7 @@ public class Controller implements MouseListener, ActionListener, MouseMotionLis
 								CC newCC = new CC(gm.getCurrentPlayer());
 								pa.setCC(newCC);
 								gm.getCurrentPlayer().addCC(newCC);
-								gm.next();
+								gm.nextAction();
 							}
 							else{
 								gm.UpdateObserver("you have to place your CC near your UV");
@@ -108,7 +108,7 @@ public class Controller implements MouseListener, ActionListener, MouseMotionLis
 						}
 						if(atLeastOneOpponant){
 							lm.setPos(he);
-							gm.next();
+							gm.nextAction();
 						}
 						else{
 							gm.UpdateObserver("the layaboute mate should be near an opponant");
@@ -117,7 +117,7 @@ public class Controller implements MouseListener, ActionListener, MouseMotionLis
 				}
 			}
 			else if(gm.isRollingDice()){
-				gm.next();
+				gm.nextAction();
 			}
 			
 			
@@ -132,7 +132,7 @@ public class Controller implements MouseListener, ActionListener, MouseMotionLis
 			
 		}
 		else if(e.getSource().getClass() == TransitionPanel.class){
-			gm.next();
+			gm.nextAction();
 		}
 		
 	}

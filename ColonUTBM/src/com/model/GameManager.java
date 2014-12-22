@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import com.controller.Controller;
+import com.model.card.RessourceCard;
 import com.observer.Observable;
 import com.observer.Observer;
 import com.view.ColorConstants;
@@ -125,7 +126,7 @@ public class GameManager implements Observable{
 	
 	// Cette fonction sera appelé par le controller a chaque fois que l'action en cours sera terminé
 	// Elle permet au game manager de savoir quelle sera l'action suivant.
-	public void next(){
+	public void nextAction(){
 		
 		if(placementPhase){
 			if(placingUV){
@@ -181,18 +182,21 @@ public class GameManager implements Observable{
 					UpdateObserver("Dice value : "+diceValue+" ("+d1+"+"+d2+")");
 					canEndTurn = true;
 				}
-				// sinon le joueur déplace le binome glandeur
+				// sinon tous les joueurs perdent la moitié de leu cartes
+				// et le current player déplace le binome glandeur
 				else{
+					loseHalfCards();
 					movingLayaboutMate = true;
-					UpdateObserver("Dice value : "+diceValue+" ("+d1+"+"+d2+"), click on an hexagon to move the layaboute mate");
+					UpdateObserver("Dice value : "+diceValue+" ("+d1+"+"+d2+"), everybody have lost the half of there cards, click on an hexagon to move the layaboute mate");
 				}
 			}
 			// si le joueur vient de déplacer le binome glandeur
 			else if(movingLayaboutMate){
 				movingLayaboutMate = false;
 				//on vole un joueur
-				steal();
 				canEndTurn = true;
+				steal();
+				
 			}
 			// si on vient de commencer le tour d'un joueur :
 			else{
@@ -217,23 +221,74 @@ public class GameManager implements Observable{
 	
 	
 	// ---- methodes privées ----
-	private void steal(){ // a finir !!!!!!!!
-		ArrayList<Object> targets = new ArrayList<Object>();
-		for(Point po : map.getLayaboutMate().getPos().getPoints()){
-			if(po.getUV() != null){
-				if(!targets.contains(po.getUV().getPlayer())){
-					targets.add(po.getUV().getPlayer().getName());
+	
+	// tous les joueurs perdent la moitié de leurs cartes si ils en possède plus de 7
+	private void loseHalfCards(){
+		for(Player pl : players){
+			if(pl.getRessourceCards().size() > 7){
+				int nbLostCard = pl.getRessourceCards().size()/2;
+				
+				for(int i=0 ; i<nbLostCard ; i++){
+					int rand = (int)(Math.random()*pl.getRessourceCards().size());
+					pl.getRessourceCards().remove(rand);
 				}
 			}
 		}
-		String target = (String)JOptionPane.showInputDialog(null
+	}
+	
+	private void steal(){ // a finir !!!!!!!!
+		// initailisation de la liste des cibles
+		ArrayList<String> targetNames = new ArrayList<String>();
+		// on parcourt les UV adjacentes au binome glandeur
+		for(Point po : map.getLayaboutMate().getPos().getPoints()){
+			if(po.getUV() != null){
+				// si le propriétaire de l'UV n'est pas l'attaquant ou déja compté, on l'ajoute a la liste
+				Player owner = po.getUV().getPlayer();
+				if(owner != currentPlayer && !targetNames.contains(owner.getName())){
+					String name = owner.getName();
+					targetNames.add(name);
+				}
+			}
+		}
+		String targetName = (String)JOptionPane.showInputDialog(null
 				, "chose your target"
 				, "target"
 				, JOptionPane.PLAIN_MESSAGE
 				, null
-				, targets.toArray()
-				, "name");
-		System.out.println(target);
+				, targetNames.toArray()
+				, "");
+		
+		if (targetName == null){
+			// si le joueur n'a choisi person, on recommence
+			UpdateObserver("you have to choose a target");
+			steal();
+		}
+		else{
+			// on trouve le joueur a partir de son nom
+			Player target = null;
+			for(Player pl : players){
+				if(pl.getName() == targetName){
+					target = pl;
+				}
+			}
+			
+			// le joueur vole une ressource à la cible si il en possède une
+			int nbCard = target.getRessourceCards().size();
+			if(nbCard>0){
+				int rand = (int)(Math.random()*nbCard);
+				RessourceCard cardStolen = target.getRessourceCards().get(rand);
+				target.getRessourceCards().remove(rand);
+				currentPlayer.getRessourceCards().add(cardStolen);
+				UpdateObserver("you stole a card "+cardStolen.getType());
+			}
+			else{
+				UpdateObserver("the target doesn't have ressource card");
+			}
+		}
+		
+		
+		
+		
 	}
 	
 	//le current player passe au joueur suivant
