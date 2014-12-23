@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import com.model.Player;
-import com.observer.Observer;
 
 public class RightPanel extends JPanel{
 

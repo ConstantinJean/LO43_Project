@@ -47,4 +47,8 @@ public class MainPanel extends JPanel{
 	public LogPanel getLogPanel(){
 		return publicInfoPanel.getLogPanel();
 	}
+	
+	public MapPanel getMapPanel(){
+		return mapPanel;
+	}
 }

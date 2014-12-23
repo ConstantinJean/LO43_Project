@@ -32,6 +32,7 @@ public class GameManager implements Observable{
 	private boolean placingUVplus;
 	private boolean placingCC;
 	private boolean rollingDice;
+	private boolean buying;
 	private boolean devCardPlayed;
 	private boolean movingLayaboutMate;
 	private boolean canEndTurn;
@@ -43,7 +44,7 @@ public class GameManager implements Observable{
 	
 	// ---- Main ----
 	public static void main(String[] args) {
-		GameManager gm = new GameManager(4);
+		GameManager gm = new GameManager(2);
 		Controller c = new Controller(gm);
 		Window w = new Window(gm, c);
 		
@@ -215,9 +216,16 @@ public class GameManager implements Observable{
 		UpdateObserver("trans");
 	}
 	
+	// c'est la methode qui est appelé quand on appuis sur le bouton "buy"
+	public void buy(){
+		buying = true;
+		UpdateObserver("shop");
+	}
 	
-	
-	
+	public void shopClosed(){
+		buying = false;
+		UpdateObserver("");
+	}
 	
 	
 	// ---- methodes privées ----
@@ -236,7 +244,7 @@ public class GameManager implements Observable{
 		}
 	}
 	
-	private void steal(){ // a finir !!!!!!!!
+	private void steal(){
 		// initailisation de la liste des cibles
 		ArrayList<String> targetNames = new ArrayList<String>();
 		// on parcourt les UV adjacentes au binome glandeur
@@ -259,7 +267,7 @@ public class GameManager implements Observable{
 				, "");
 		
 		if (targetName == null){
-			// si le joueur n'a choisi person, on recommence
+			// si le joueur n'a choisi personne, on recommence
 			UpdateObserver("you have to choose a target");
 			steal();
 		}
@@ -285,8 +293,6 @@ public class GameManager implements Observable{
 				UpdateObserver("the target doesn't have ressource card");
 			}
 		}
-		
-		
 		
 		
 	}
@@ -344,6 +350,9 @@ public class GameManager implements Observable{
 	}
 	public boolean isMovingLayaboutMate(){
 		return movingLayaboutMate;
+	}
+	public boolean isBuying(){
+		return buying;
 	}
 	public boolean canEndTurn(){
 		return canEndTurn;

@@ -19,7 +19,7 @@ public class ActionPanel extends JPanel{
 	/********************** Attributes **********************/
 	public static final int Y_SIZE = 150;
 	
-	private GameManager GameManager;
+	private GameManager gameManager;
 	
 	private JButton nextTurn;
 	private JButton buy;
@@ -30,7 +30,7 @@ public class ActionPanel extends JPanel{
 	/*********************** Methods ***********************/
 	public ActionPanel(GameManager gm, Controller c){
 		super();
-		GameManager = gm;
+		gameManager = gm;
 		
 		
 		nextTurn = new JButton("Next turn");
@@ -64,8 +64,8 @@ public class ActionPanel extends JPanel{
 	}
 	
 	public void paintComponent(Graphics g){
-		nextTurn.setEnabled(GameManager.canEndTurn());
-		buy.setEnabled(GameManager.canEndTurn());
+		nextTurn.setEnabled(gameManager.canEndTurn() && !gameManager.isBuying());
+		buy.setEnabled(gameManager.canEndTurn() && !gameManager.isBuying());
 		
 		
 		g.setColor(Color.GRAY);

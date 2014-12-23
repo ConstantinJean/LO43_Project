@@ -41,22 +41,21 @@ public class GlobalPanel extends JPanel{
 		layout.show(this, "menuPanel");
 	}
 	
-	public void paintComponent(Graphics g){
-		g.setColor(Color.DARK_GRAY);
-		g.fillRect(0, 0, this.getWidth(), this.getHeight());
+//	public void paintComponent(Graphics g){
+//		g.setColor(Color.DARK_GRAY);
+//		g.fillRect(0, 0, this.getWidth(), this.getHeight());
+//	}
+	
+	public void showTransitionPanel(boolean b){
+		if(b)
+			layout.show(this, "transitionPanel");
+		else
+			layout.show(this, "mainPanel");
 	}
 	
-	public void showMainPanel(){
-		layout.show(this, "mainPanel");
-	}
 	
-	public void showTransitionPanel(){
-		layout.show(this, "transitionPanel");
-	}
-	
-	
-	public LogPanel getLogPanel(){
-		return mainPanel.getLogPanel();
+	public MainPanel getMainPanel(){
+		return mainPanel;
 	}
 
 }

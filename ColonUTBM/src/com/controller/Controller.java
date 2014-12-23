@@ -5,14 +5,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.security.acl.LastOwnerException;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import com.model.*;
 import com.model.hexagon.InternHexagon;
 import com.view.MapPanel;
 import com.view.TransitionPanel;
 
-public class Controller implements MouseListener, ActionListener, MouseMotionListener {
+public class Controller implements MouseListener, ActionListener, MouseMotionListener, WindowListener {
 
 	
 	
@@ -32,9 +33,12 @@ public class Controller implements MouseListener, ActionListener, MouseMotionLis
 			gm.startGame();
 			break;
 		case "NEXT_TURN":
-			if(gm.canEndTurn()){
-				gm.nextTurn();
-			}
+			gm.nextTurn();
+			break;
+		case "BUY":
+			gm.buy();
+			break;
+		case "BUY_CC":
 			break;
 		}
 		
@@ -121,14 +125,6 @@ public class Controller implements MouseListener, ActionListener, MouseMotionLis
 			}
 			
 			
-//			if(gameManager.isPlacementPhase()){
-//				
-//			}
-//			else{// if it is not the placement phase
-//				
-//			}
-			
-			
 			
 		}
 		else if(e.getSource().getClass() == TransitionPanel.class){
@@ -145,6 +141,10 @@ public class Controller implements MouseListener, ActionListener, MouseMotionLis
 		
 	}
 	
+	// fonction appelée quand on ferme le shop;
+	public void windowClosing(WindowEvent arg0) {
+		gm.shopClosed();
+	}
 	
 	
 	public void mouseClicked(MouseEvent arg0) {}
@@ -152,5 +152,11 @@ public class Controller implements MouseListener, ActionListener, MouseMotionLis
 	public void mouseExited(MouseEvent arg0) {}
 	public void mouseReleased(MouseEvent arg0) {}
 	public void mouseDragged(MouseEvent e) {}
+	public void windowActivated(WindowEvent arg0) {}
+	public void windowClosed(WindowEvent arg0) {}
+	public void windowDeactivated(WindowEvent arg0) {}
+	public void windowDeiconified(WindowEvent arg0) {}
+	public void windowIconified(WindowEvent arg0) {}
+	public void windowOpened(WindowEvent arg0) {}
 	
 }
