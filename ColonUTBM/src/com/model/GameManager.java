@@ -133,6 +133,7 @@ public class GameManager implements Observable{
 			if(placingUV){
 				// si on est dans la phase de placement et qu'on vient de placer une UV :
 				placingUV = false;
+				currentPlayer.setVictoryPoint(currentPlayer.getVictoryPoint()+1);
 				// si on est dans le deuxième tour de table alors le joueur gagne des ressources
 				if(currentTurn>nbPlayer){
 					map.giveInitialRessources((UV)lastObjectPlaced);
@@ -197,6 +198,12 @@ public class GameManager implements Observable{
 				canEndTurn = true;
 				UpdateObserver("");
 			}
+			// si le joueur vient de placer une UV
+			else if(placingUV){
+				placingUV = false;
+				canEndTurn = true;
+				UpdateObserver("");
+			}
 			// si le joueur vient de déplacer le binome glandeur
 			else if(movingLayaboutMate){
 				movingLayaboutMate = false;
@@ -225,6 +232,7 @@ public class GameManager implements Observable{
 	// c'est la methode qui est appelé quand on appuis sur le bouton "buy"
 	public void buy(){
 		buying = true;
+		canEndTurn = false;
 		UpdateObserver("shop");
 	}
 	
@@ -242,6 +250,19 @@ public class GameManager implements Observable{
 		
 		currentPlayer.spendRessourceCard(Ressource.BEER);
 		currentPlayer.spendRessourceCard(Ressource.FOOD);
+	}
+	
+	public void buyUV(){
+		buying = false;
+		placingUV = true;
+		UpdateObserver("click on a point to place an UV");
+		
+		currentPlayer.spendRessourceCard(Ressource.BEER);
+		currentPlayer.spendRessourceCard(Ressource.FOOD);
+		currentPlayer.spendRessourceCard(Ressource.COURS);
+		currentPlayer.spendRessourceCard(Ressource.COFFEE);
+
+		currentPlayer.setVictoryPoint(currentPlayer.getVictoryPoint()+1);
 	}
 	
 	// ---- methodes privées ----

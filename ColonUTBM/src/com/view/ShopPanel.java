@@ -2,13 +2,16 @@ package com.view;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import com.controller.Controller;
 import com.model.GameManager;
+import com.model.Path;
 import com.model.Player;
+import com.model.Point;
 import com.model.Ressource;
 
 public class ShopPanel extends JPanel{
@@ -73,8 +76,39 @@ public class ShopPanel extends JPanel{
 		if(cp.getRessourceCards(Ressource.BEER) >= 1
 				&& cp.getRessourceCards(Ressource.FOOD) >= 1
 				&& cp.getRessourceCards(Ressource.COURS) >= 1
-				&& cp.getRessourceCards(Ressource.COFFEE) >= 1)
-			UV.setEnabled(true);
+				&& cp.getRessourceCards(Ressource.COFFEE) >= 1){
+			// on fait la liste des point avec un CC adjacent
+			ArrayList<Point> possiblePoint = new ArrayList<Point>();
+			for(Point po : gameManager.getMap().getPoints()){
+				for(Path pa : gameManager.getMap().getPaths()){
+					for(Point endPo : pa.getEnd()){
+						if(endPo == po && pa.getCC() != null && pa.getCC().getPlayer()==gameManager.getCurrentPlayer()){
+							possiblePoint.add(po);
+						}
+					}
+				}
+			}
+			// pour chacun de ces point on vérifie qu'il n'existe pas d'UV adjacente
+			ArrayList<Point> falsePossiblePoint = new ArrayList<>();
+			for(Point po : possiblePoint){
+				for(Path pa : gameManager.getMap().getPaths()){
+					if(pa.getEnd().contains(po)){
+						for(Point endPo : pa.getEnd()){
+							if(endPo.getUV() != null){
+								if(!falsePossiblePoint.contains(po))
+									falsePossiblePoint.add(po);
+							}
+						}
+					}
+				}
+			}
+			if(possiblePoint.size()>falsePossiblePoint.size())
+				UV.setEnabled(true);
+			else{
+				UV.setEnabled(false);
+				g.drawString("There is no place for an UV", 160, 135);
+			}
+		}
 		else
 			UV.setEnabled(false);
 		g.drawString("1 Beer + 1 Food + 1 Cours + 1 Coffee", 160, 120);

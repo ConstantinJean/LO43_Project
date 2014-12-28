@@ -41,10 +41,13 @@ public class Controller implements MouseListener, ActionListener, MouseMotionLis
 		case "BUY_CC":
 			gm.buyCC();
 			break;
+		case "BUY_UV":
+			gm.buyUV();
+			break;
 		}
 		
-		
 	}
+	
 	public void mousePressed(MouseEvent e) {
 		// on vérifie que le joueur a cliqué sur la mapPanel
 		if(e.getSource().getClass() == MapPanel.class){
@@ -52,11 +55,33 @@ public class Controller implements MouseListener, ActionListener, MouseMotionLis
 			
 			// si le joueur est en phase de placement d'UV
 			if(gm.isPlacingUV()){
+				// on vérifieque le curseur est au dessus d'un point
 				if(mp.getUnderMouseObject() != null
 						&& mp.getUnderMouseObject().getClass() == Point.class){
 					Point po = (Point)mp.getUnderMouseObject();
+					// on vérifie que le point ne contient pas d'UV
 					if(po.getUV() == null){
-						boolean placable = true;
+						
+						boolean placable = false;
+						// si on se trouve dans la phase de placement, on peux placer l'UV au milieu de nul part
+						if(gm.isPlacementPhase()){
+							placable = true;
+						}
+						// sinon il faut etre relié a un CC
+						else{
+							placable = false;
+							for(Path adjPa : gm.getMap().getPaths()){
+								if(adjPa.getCC() != null && adjPa.getCC().getPlayer() == gm.getCurrentPlayer()){
+									for(Point endPo : adjPa.getEnd()){
+										if(endPo == po){
+											placable = true;
+										}
+									}
+								}
+							}
+						}
+						
+						// si il a une UV adjacente a ce point on ne pas poser l'UV
 						for(Point adjPoint : po.getAdjPoints()){
 							if(adjPoint.getUV() != null){
 								placable = false;
@@ -71,8 +96,11 @@ public class Controller implements MouseListener, ActionListener, MouseMotionLis
 							gm.nextAction();
 						}
 						else{
-							gm.UpdateObserver("you can't place an UV near an other UV");
+							gm.UpdateObserver("You can't place an UV here");
 						}
+					}
+					else{
+						gm.UpdateObserver("This point contains an UV");
 					}
 				}
 			}
@@ -101,7 +129,7 @@ public class Controller implements MouseListener, ActionListener, MouseMotionLis
 								gm.nextAction();
 							}
 							else{
-								gm.UpdateObserver("you have to place your CC near your UV");
+								gm.UpdateObserver("You have to place your CC near your UV");
 							}
 						}
 						// si on ne se trouve pas en phase de placement

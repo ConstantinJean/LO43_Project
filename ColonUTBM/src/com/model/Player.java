@@ -46,6 +46,15 @@ public class Player implements Observable{
 		oldestElder = 0;
 		haveTheLongestCursus = false;
 		haveTheOldestElder = false;
+		
+		// -------- test -----------
+		for(int i=0 ; i<50 ; i++){
+			ressourceCards.add(new RessourceCard(Ressource.BEER));
+			ressourceCards.add(new RessourceCard(Ressource.SLEEP));
+			ressourceCards.add(new RessourceCard(Ressource.COFFEE));
+			ressourceCards.add(new RessourceCard(Ressource.COURS));
+			ressourceCards.add(new RessourceCard(Ressource.FOOD));
+		}
 	}
 	
 	
@@ -61,6 +70,12 @@ public class Player implements Observable{
 	}
 	public int getPassageOrder(){
 		return passageOrder;
+	}
+	public ArrayList<UV> getUVs(){
+		return getUVs();
+	}
+	public ArrayList<CC> getCCs(){
+		return getCCs();
 	}
 	public ArrayList<RessourceCard> getRessourceCards(){
 		return ressourceCards;
@@ -91,7 +106,9 @@ public class Player implements Observable{
 	public int getVictoryPoint(){
 		return VictoryPoint;
 	}
-
+	public void setVictoryPoint(int vp){
+		this.VictoryPoint = vp;
+	}
 	public int getLongestCursus() {
 		return longestCursus;
 	}
