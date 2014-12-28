@@ -1,11 +1,7 @@
 package com.view;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -26,6 +22,7 @@ public class MenuPanel extends JPanel {
 	
 	public MenuPanel(GameManager gm, Controller c){
 		super();
+		setLayout(null);
 		playButton = new JButton("PLAY");
 		this.add(playButton);
 		playButton.setActionCommand("PLAY");
@@ -35,5 +32,6 @@ public class MenuPanel extends JPanel {
 	public void paintComponent(Graphics g){
 		g.setColor(Color.BLUE);
 		g.fillRect(0, 0, getWidth(), getHeight());
+		playButton.setBounds(getWidth()/2-40, getHeight()/2-15, 80, 30);
 	}
 }

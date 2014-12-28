@@ -103,7 +103,7 @@ public class GameManager implements Observable{
 		
 	}
 	
-	// ---- function to start the game ----
+	// la fontion qui démarre la partie
 	public void startGame(){
 		// C'est le premier tour de jeu
 		currentTurn = 1;
@@ -191,13 +191,19 @@ public class GameManager implements Observable{
 					UpdateObserver("Dice value : "+diceValue+" ("+d1+"+"+d2+"), everybody have lost the half of there cards, click on an hexagon to move the layaboute mate");
 				}
 			}
+			// si le joueur vient de placer un CC
+			else if(placingCC){
+				placingCC = false;
+				canEndTurn = true;
+				UpdateObserver("");
+			}
 			// si le joueur vient de déplacer le binome glandeur
 			else if(movingLayaboutMate){
 				movingLayaboutMate = false;
 				//on vole un joueur
 				canEndTurn = true;
 				steal();
-				
+				UpdateObserver("");
 			}
 			// si on vient de commencer le tour d'un joueur :
 			else{
@@ -222,11 +228,21 @@ public class GameManager implements Observable{
 		UpdateObserver("shop");
 	}
 	
+	// la methode qui est appelé quand on ferme la fenetre de shop
 	public void shopClosed(){
 		buying = false;
 		UpdateObserver("");
 	}
 	
+	// la méthode pour acheter un CC
+	public void buyCC(){
+		buying = false;
+		placingCC = true;
+		UpdateObserver("click on a path to place a CC");
+		
+		currentPlayer.spendRessourceCard(Ressource.BEER);
+		currentPlayer.spendRessourceCard(Ressource.FOOD);
+	}
 	
 	// ---- methodes privées ----
 	

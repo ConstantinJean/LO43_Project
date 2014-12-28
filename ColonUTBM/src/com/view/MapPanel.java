@@ -143,6 +143,8 @@ public class MapPanel extends JPanel{
 						case FOOD:
 							g.setColor(new Color(ColorConstants.FoodR, ColorConstants.FoodG, ColorConstants.FoodB));
 							break;
+						default:
+							break;
 						}
 						
 						

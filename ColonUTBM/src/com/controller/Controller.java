@@ -39,15 +39,18 @@ public class Controller implements MouseListener, ActionListener, MouseMotionLis
 			gm.buy();
 			break;
 		case "BUY_CC":
+			gm.buyCC();
 			break;
 		}
 		
 		
 	}
 	public void mousePressed(MouseEvent e) {
+		// on vérifie que le joueur a cliqué sur la mapPanel
 		if(e.getSource().getClass() == MapPanel.class){
 			MapPanel mp = (MapPanel) e.getSource();
 			
+			// si le joueur est en phase de placement d'UV
 			if(gm.isPlacingUV()){
 				if(mp.getUnderMouseObject() != null
 						&& mp.getUnderMouseObject().getClass() == Point.class){
@@ -73,18 +76,24 @@ public class Controller implements MouseListener, ActionListener, MouseMotionLis
 					}
 				}
 			}
+			// si le joueur est en train de placer un CC
 			else if(gm.isPlacingCC()){
+				// on vérifie que le curseur est au dessus d'un path
 				if(mp.getUnderMouseObject() != null && mp.getUnderMouseObject().getClass() == Path.class){
 					Path pa = (Path)mp.getUnderMouseObject();
+					// on vérifie que le path ne contient pas de CC
 					if(pa.getCC() == null){
-						if(gm.getLastObjectPlaced().getClass() == UV.class){
+						
+						// si on se trouve en phase de placement
+						if(gm.isPlacementPhase()){
+							// on vérifie que le path est adjacent a l'UV que l'on a posé juste avant
 							boolean placable = false;
-							
 							for(Point po : pa.getEnd()){
 								if(po.getUV() == gm.getLastObjectPlaced()){
 									placable = true;
 								}
 							}
+							
 							if(placable){
 								CC newCC = new CC(gm.getCurrentPlayer());
 								pa.setCC(newCC);
@@ -95,8 +104,44 @@ public class Controller implements MouseListener, ActionListener, MouseMotionLis
 								gm.UpdateObserver("you have to place your CC near your UV");
 							}
 						}
+						// si on ne se trouve pas en phase de placement
+						else{
+							// on vérifie que le path est relié a une UV, une UV** ou un CC du même joueur
+							boolean placable = false;
+							for(Point po : pa.getEnd()){
+								// si le path est relié a une UV ou UV** du joueur
+								if(po.getUV() != null && po.getUV().getPlayer() == gm.getCurrentPlayer()){
+									placable = true;
+								}
+								
+								// si le path est relié a un CC du joueur
+								if(!placable){
+									for(Path adjPa : gm.getMap().getPaths()){
+										if(adjPa.getCC() != null && adjPa.getCC().getPlayer() == gm.getCurrentPlayer()){
+											for(Point endPo : adjPa.getEnd()){
+												if(endPo == po){
+													placable = true;
+												}
+											}
+										}
+									}
+								}
+							}
+							
+							if(placable){
+								CC newCC = new CC(gm.getCurrentPlayer());
+								pa.setCC(newCC);
+								gm.getCurrentPlayer().addCC(newCC);
+								gm.nextAction();
+							}
+							else{
+								gm.UpdateObserver("Your CC should be near an UV or a CC");
+							}
+							
+						}
 					}
-					
+					else
+						gm.UpdateObserver("This path contains a CC");
 				}
 			}
 			else if(gm.isMovingLayaboutMate()){

@@ -1,7 +1,6 @@
 package com.view;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 
 import javax.swing.JPanel;
@@ -13,7 +12,6 @@ public class PublicPlayerPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
 /********************** Attributes **********************/
 	
 	private Player player;

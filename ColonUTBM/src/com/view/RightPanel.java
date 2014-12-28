@@ -19,9 +19,6 @@ public class RightPanel extends JPanel{
 /********************** Attributes **********************/
 	public static final int X_SIZE = 150;
 	
-	private ArrayList<Player> players;
-	
-	private ArrayList<PublicPlayerPanel> playerPanel;
 	private LogPanel logPanel;
 	
 	private GridLayout layout;
@@ -29,9 +26,7 @@ public class RightPanel extends JPanel{
 /*********************** Methods ***********************/
 	public RightPanel(ArrayList<Player> players){
 		super();
-		
-		this.players = players;
-		playerPanel = new ArrayList<PublicPlayerPanel>();
+
 		logPanel = new LogPanel();
 		layout = new GridLayout(players.size()+1, 1);
 		this.setLayout(layout);

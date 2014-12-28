@@ -74,6 +74,14 @@ public class Player implements Observable{
 		}
 		return nb;
 	}
+	public void spendRessourceCard(Ressource ressource){
+		for(RessourceCard rc : ressourceCards){
+			if(rc.getType() == ressource){
+				ressourceCards.remove(rc);
+				return;
+			}
+		}
+	}
 	public void addUV(UV UV){
 		UVs.add(UV);
 	}

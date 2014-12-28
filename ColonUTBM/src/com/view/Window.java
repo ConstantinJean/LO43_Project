@@ -21,9 +21,13 @@ public class Window extends JFrame implements Observer{
 	
 	private GameManager gameManager;
 	private Controller controller;
+	
+	private ShopWindow shopWindow;
 /*********************** Methods ***********************/
 	public Window(GameManager gm, Controller c){
 		super();
+		
+		shopWindow = null;
 		
 		gameManager = gm;
 		controller = c;
@@ -49,7 +53,7 @@ public class Window extends JFrame implements Observer{
 		globalPanel.showTransitionPanel(b);
 	}
 	private void showShop(){
-		new ShopWindow(gameManager, controller);
+		shopWindow = new ShopWindow(gameManager, controller);
 	}
 
 	public void update(String msg) {
@@ -62,6 +66,10 @@ public class Window extends JFrame implements Observer{
 		}
 		else{
 			showTransitionPanel(false);
+			
+			if(shopWindow != null){
+				shopWindow.dispose();
+			}
 		
 			if(!logPanel.getText().equals(msg)){
 				logPanel.setText(msg);

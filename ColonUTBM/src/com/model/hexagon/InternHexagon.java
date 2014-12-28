@@ -2,7 +2,6 @@ package com.model.hexagon;
 
 import com.model.Point;
 import com.model.Ressource;
-import com.model.UV;
 import com.model.UVplus;
 import com.model.card.RessourceCard;
 
