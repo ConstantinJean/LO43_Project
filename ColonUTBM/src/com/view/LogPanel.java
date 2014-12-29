@@ -1,34 +1,20 @@
 package com.view;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.Dimension;
 
-import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
-public class LogPanel extends JPanel{
+public class LogPanel extends JTextArea{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-/********************** Attributes **********************/
-	private String text;
 /*********************** Methods ***********************/
 	public LogPanel(){
 		super();
-		text = "welcome";
-	}
-	public void paintComponent(Graphics g){
-		g.setColor(Color.WHITE);
-		g.fillRect(0, 0, getWidth(), getHeight());
-		g.setColor(Color.BLACK);
-		g.drawString(text, 0, 15);
-	}
-	
-	public String getText(){
-		return text;
-	}
-	
-	public void setText(String msg){
-		text = msg;
+		setPreferredSize(new Dimension(50, 150));
+		setEditable(false);
+		setLineWrap(true);
+		setWrapStyleWord(true);
 	}
 }
