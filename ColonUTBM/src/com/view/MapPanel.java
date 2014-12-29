@@ -223,9 +223,6 @@ public class MapPanel extends JPanel{
 		
 		
 		
-		
-		
-		
 		// for each point
 		for(Point p : map.getPoints()){
 			if(p.getUV() == null){
@@ -238,10 +235,19 @@ public class MapPanel extends JPanel{
 			}
 			else{
 				g.setColor(p.getUV().getPlayer().getColor());
-				if(p == underMouseObj)
-					g.fillRect(convX(p.getX())-7, convY(p.getY())-7, 14, 14);
-				else
-					g.fillRect(convX(p.getX())-5, convY(p.getY())-5, 10, 10);
+				if(p.getUV().getClass() == UVplus.class){
+					if(p == underMouseObj)
+						g.fillRect(convX(p.getX())-10, convY(p.getY())-10, 20, 20);
+					else
+						g.fillRect(convX(p.getX())-8, convY(p.getY())-8, 16, 16);
+				}
+				else{
+					if(p == underMouseObj)
+						g.fillRect(convX(p.getX())-7, convY(p.getY())-7, 14, 14);
+					else
+						g.fillRect(convX(p.getX())-5, convY(p.getY())-5, 10, 10);
+				}
+				
 			}
 			
 			//display the index of the point

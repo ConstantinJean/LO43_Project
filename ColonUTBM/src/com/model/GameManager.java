@@ -204,6 +204,12 @@ public class GameManager implements Observable{
 				canEndTurn = true;
 				UpdateObserver("");
 			}
+			// si le joueur vient de placer une UV**
+			else if (placingUVplus){
+				placingUVplus = false;
+				canEndTurn = true;
+				UpdateObserver("");
+			}
 			// si le joueur vient de déplacer le binome glandeur
 			else if(movingLayaboutMate){
 				movingLayaboutMate = false;
@@ -262,6 +268,20 @@ public class GameManager implements Observable{
 		currentPlayer.spendRessourceCard(Ressource.COURS);
 		currentPlayer.spendRessourceCard(Ressource.COFFEE);
 
+		currentPlayer.setVictoryPoint(currentPlayer.getVictoryPoint()+1);
+	}
+	
+	public void buyUVplus(){
+		buying = false;
+		placingUVplus = true;
+		UpdateObserver("click on an UV to turn it into UV**");
+		
+		currentPlayer.spendRessourceCard(Ressource.COURS);
+		currentPlayer.spendRessourceCard(Ressource.COURS);
+		currentPlayer.spendRessourceCard(Ressource.SLEEP);
+		currentPlayer.spendRessourceCard(Ressource.SLEEP);
+		currentPlayer.spendRessourceCard(Ressource.SLEEP);
+		
 		currentPlayer.setVictoryPoint(currentPlayer.getVictoryPoint()+1);
 	}
 	

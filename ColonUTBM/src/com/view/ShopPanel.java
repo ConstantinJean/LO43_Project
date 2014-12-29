@@ -115,7 +115,8 @@ public class ShopPanel extends JPanel{
 		
 		// le bouton UV**
 		if(cp.getRessourceCards(Ressource.COURS) >= 2
-				&& cp.getRessourceCards(Ressource.SLEEP) >= 3)
+				&& cp.getRessourceCards(Ressource.SLEEP) >= 3
+				&& cp.getUVs().size()>=1)
 			UVplus.setEnabled(true);
 		else
 			UVplus.setEnabled(false);

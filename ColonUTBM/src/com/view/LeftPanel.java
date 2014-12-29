@@ -45,11 +45,31 @@ public class LeftPanel extends JPanel{
 		
 		g.setColor(Color.BLACK);
 		g.drawString(gameManager.getCurrentPlayer().getName(), 10, 20);
-		g.drawString("BEER : "+gameManager.getCurrentPlayer().getRessourceCards(Ressource.BEER), 10, 40);
-		g.drawString("SLEEP : "+gameManager.getCurrentPlayer().getRessourceCards(Ressource.SLEEP), 10, 55);
-		g.drawString("COFFEE : "+gameManager.getCurrentPlayer().getRessourceCards(Ressource.COFFEE), 10, 70);
-		g.drawString("COURS : "+gameManager.getCurrentPlayer().getRessourceCards(Ressource.COURS), 10, 85);
-		g.drawString("FOOD : "+gameManager.getCurrentPlayer().getRessourceCards(Ressource.FOOD), 10, 100);
+		
+		g.setColor(new Color(ColorConstants.BeerR, ColorConstants.BeerG, ColorConstants.BeerB));
+		g.fillRect(10, 30, 10, 10);
+		g.setColor(Color.BLACK);
+		g.drawString("BEER : "+gameManager.getCurrentPlayer().getRessourceCards(Ressource.BEER), 25, 40);
+		
+		g.setColor(new Color(ColorConstants.SleepR, ColorConstants.SleepG, ColorConstants.SleepB));
+		g.fillRect(10, 45, 10, 10);
+		g.setColor(Color.BLACK);
+		g.drawString("SLEEP : "+gameManager.getCurrentPlayer().getRessourceCards(Ressource.SLEEP), 25, 55);
+		
+		g.setColor(new Color(ColorConstants.CoffeeR, ColorConstants.CoffeeG, ColorConstants.CoffeeB));
+		g.fillRect(10, 60, 10, 10);
+		g.setColor(Color.BLACK);
+		g.drawString("COFFEE : "+gameManager.getCurrentPlayer().getRessourceCards(Ressource.COFFEE), 25, 70);
+		
+		g.setColor(new Color(ColorConstants.CoursR, ColorConstants.CoursG, ColorConstants.CoursB));
+		g.fillRect(10, 75, 10, 10);
+		g.setColor(Color.BLACK);
+		g.drawString("COURS : "+gameManager.getCurrentPlayer().getRessourceCards(Ressource.COURS), 25, 85);
+		
+		g.setColor(new Color(ColorConstants.FoodR, ColorConstants.FoodG, ColorConstants.FoodB));
+		g.fillRect(10, 90, 10, 10);
+		g.setColor(Color.BLACK);
+		g.drawString("FOOD : "+gameManager.getCurrentPlayer().getRessourceCards(Ressource.FOOD), 25, 100);
 	}
 	
 	

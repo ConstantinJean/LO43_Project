@@ -72,7 +72,7 @@ public class Player implements Observable{
 		return passageOrder;
 	}
 	public ArrayList<UV> getUVs(){
-		return getUVs();
+		return UVs;
 	}
 	public ArrayList<CC> getCCs(){
 		return getCCs();
@@ -99,6 +99,12 @@ public class Player implements Observable{
 	}
 	public void addUV(UV UV){
 		UVs.add(UV);
+	}
+	public void removeUV(UV UV){
+		UVs.remove(UV);
+	}
+	public void addUVplus(UVplus UVplus){
+		UVsPlus.add(UVplus);
 	}
 	public void addCC(CC CC){
 		CCs.add(CC);

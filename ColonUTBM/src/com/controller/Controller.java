@@ -44,6 +44,9 @@ public class Controller implements MouseListener, ActionListener, MouseMotionLis
 		case "BUY_UV":
 			gm.buyUV();
 			break;
+		case "BUY_UV_PLUS":
+			gm.buyUVplus();
+			break;
 		}
 		
 	}
@@ -55,7 +58,7 @@ public class Controller implements MouseListener, ActionListener, MouseMotionLis
 			
 			// si le joueur est en phase de placement d'UV
 			if(gm.isPlacingUV()){
-				// on vérifieque le curseur est au dessus d'un point
+				// on vérifie que le curseur est au dessus d'un point
 				if(mp.getUnderMouseObject() != null
 						&& mp.getUnderMouseObject().getClass() == Point.class){
 					Point po = (Point)mp.getUnderMouseObject();
@@ -101,6 +104,34 @@ public class Controller implements MouseListener, ActionListener, MouseMotionLis
 					}
 					else{
 						gm.UpdateObserver("This point contains an UV");
+					}
+				}
+			}
+			// si le joeur est en train de placer une UV**
+			else if(gm.isPlacingUVplus()){
+				// on vérifie que le curseur est au dessus d'un point
+				if(mp.getUnderMouseObject() != null
+						&& mp.getUnderMouseObject().getClass() == Point.class){
+					Point po = (Point)mp.getUnderMouseObject();
+					// on vérifie que le point contient une UV
+					if(po.getUV() != null){
+						UV odlUV = po.getUV();
+						if(odlUV.getPlayer() == gm.getCurrentPlayer()){
+						
+							UVplus newUVplus = new UVplus(gm.getCurrentPlayer());
+							po.setUV(newUVplus);
+							gm.getCurrentPlayer().addUVplus(newUVplus);
+							gm.getCurrentPlayer().removeUV(odlUV);
+							gm.setLastObjectPlaced(newUVplus);
+							
+							gm.nextAction();
+						}
+						else{
+							gm.UpdateObserver("Your not the owner of this UV");
+						}
+					}
+					else{
+						gm.UpdateObserver("This point doesn't contain an UV");
 					}
 				}
 			}
