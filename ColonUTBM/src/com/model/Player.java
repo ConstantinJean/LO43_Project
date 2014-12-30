@@ -50,20 +50,20 @@ public class Player implements Observable{
 		haveTheOldestElder = false;
 		
 		// -------- test -----------
-		for(int i=0 ; i<50 ; i++){
-			ressourceCards.add(new RessourceCard(Ressource.BEER));
-			ressourceCards.add(new RessourceCard(Ressource.SLEEP));
-			ressourceCards.add(new RessourceCard(Ressource.COFFEE));
-			ressourceCards.add(new RessourceCard(Ressource.COURS));
-			ressourceCards.add(new RessourceCard(Ressource.FOOD));
-		}
-		for(int i=0 ; i<1 ; i++){
-			developmentCards.add(new ElderCard());
-			developmentCards.add(new MonopolyCard());
-			developmentCards.add(new BuildingCCCard());
-			developmentCards.add(new VictoryPointCard());
-			developmentCards.add(new DiscoveryCard());
-		}
+//		for(int i=0 ; i<50 ; i++){
+//			ressourceCards.add(new RessourceCard(Ressource.BEER));
+//			ressourceCards.add(new RessourceCard(Ressource.SLEEP));
+//			ressourceCards.add(new RessourceCard(Ressource.COFFEE));
+//			ressourceCards.add(new RessourceCard(Ressource.COURS));
+//			ressourceCards.add(new RessourceCard(Ressource.FOOD));
+//		}
+//		for(int i=0 ; i<1 ; i++){
+//			developmentCards.add(new ElderCard());
+//			developmentCards.add(new MonopolyCard());
+//			developmentCards.add(new BuildingCCCard());
+//			developmentCards.add(new VictoryPointCard());
+//			developmentCards.add(new DiscoveryCard());
+//		}
 	}
 	
 	

@@ -30,6 +30,7 @@ public class GameManager implements Observable{
 	private boolean placingUV;
 	private boolean placingUVplus;
 	private boolean placingCC;
+	private boolean placing2CC;
 	private boolean rollingDice;
 	private boolean buying;
 	private boolean devCardPlayed;
@@ -43,7 +44,7 @@ public class GameManager implements Observable{
 	
 	// ---- Main ----
 	public static void main(String[] args) {
-		GameManager gm = new GameManager(2);
+		GameManager gm = new GameManager(4);
 		Controller c = new Controller(gm);
 		Window w = new Window(gm, c);
 		
@@ -193,9 +194,16 @@ public class GameManager implements Observable{
 			}
 			// si le joueur vient de placer un CC
 			else if(placingCC){
-				placingCC = false;
-				canEndTurn = true;
-				UpdateObserver("");
+				if(placing2CC){
+					placing2CC = false;
+					UpdateObserver("You can place a second CC");
+				}
+				else{
+					placingCC = false;
+					canEndTurn = true;
+					UpdateObserver("");	
+				}
+				
 			}
 			// si le joueur vient de placer une UV
 			else if(placingUV){
@@ -230,6 +238,7 @@ public class GameManager implements Observable{
 	// c'est la methode qui est appelé quand on appuis sur le bouton "next turn"
 	public void nextTurn(){
 		canEndTurn = false;
+		devCardPlayed = false;
 		nextPlayer();
 		UpdateObserver("trans");
 	}
@@ -314,6 +323,73 @@ public class GameManager implements Observable{
 			UpdateObserver("You drew a Elder");
 		}
 	}
+
+	public void playDevCardAtPos(int i){
+		DevelopmentCard card = currentPlayer.getDevelopmentCards().get(i);
+		devCardPlayed = true;
+		if(card.getClass() == ElderCard.class){
+			canEndTurn = false;
+			movingLayaboutMate = true;
+			currentPlayer.getDevelopmentCards().remove(i);
+			UpdateObserver("Click on an hexagon to move the layaboute mate");
+			
+		}
+		else if(card.getClass() == DiscoveryCard.class){
+			int rand1 = (int)(Math.random()*5), rand2 = (int)(Math.random()*5);
+			RessourceCard newRessource1, newRessource2;
+			switch(rand1){
+			case 0:
+				newRessource1 = new RessourceCard(Ressource.BEER);
+				break;
+			case 1:
+				newRessource1 = new RessourceCard(Ressource.SLEEP);
+				break;
+			case 2:
+				newRessource1 = new RessourceCard(Ressource.COFFEE);
+				break;
+			case 3:
+				newRessource1 = new RessourceCard(Ressource.COURS);
+				break;
+			default:
+				newRessource1 = new RessourceCard(Ressource.FOOD);
+				break;
+			}
+			
+			switch(rand2){
+			case 0:
+				newRessource2 = new RessourceCard(Ressource.BEER);
+				break;
+			case 1:
+				newRessource2 = new RessourceCard(Ressource.SLEEP);
+				break;
+			case 2:
+				newRessource2 = new RessourceCard(Ressource.COFFEE);
+				break;
+			case 3:
+				newRessource2 = new RessourceCard(Ressource.COURS);
+				break;
+			default:
+				newRessource2 = new RessourceCard(Ressource.FOOD);
+				break;
+			}
+			currentPlayer.getRessourceCards().add(newRessource1);
+			currentPlayer.getRessourceCards().add(newRessource2);
+			currentPlayer.getDevelopmentCards().remove(i);
+			UpdateObserver("You won 2 ressource cards");
+		}
+		else if(card.getClass() == MonopolyCard.class){
+			currentPlayer.getDevelopmentCards().remove(i);
+			UpdateObserver("");
+			this.monopoly();
+		}
+		else if(card.getClass() == BuildingCCCard.class){
+			canEndTurn = false;
+			placing2CC = true;
+			placingCC = true;
+			currentPlayer.getDevelopmentCards().remove(i);
+			UpdateObserver("You can place 2 CC");
+		}
+	}
 	
 	// ---- methodes privées ----
 	
@@ -328,6 +404,59 @@ public class GameManager implements Observable{
 					pl.getRessourceCards().remove(rand);
 				}
 			}
+		}
+	}
+	
+	private void monopoly(){
+		//initialisation de la liste des ressources
+		ArrayList<String> ressourcesName = new ArrayList<String>();
+		ressourcesName.add("Beer");
+		ressourcesName.add("Sleep");
+		ressourcesName.add("Coffee");
+		ressourcesName.add("Cours");
+		ressourcesName.add("Food");
+		String ressourceName = (String)JOptionPane.showInputDialog(null
+				, "Chose one ressource type, all the other player will \ngive you all the ressource cards of this type"
+				, "Monopoly"
+				, JOptionPane.PLAIN_MESSAGE
+				, null
+				, ressourcesName.toArray()
+				, "");
+		if(ressourceName == null){
+			monopoly();
+		}
+		else{
+			Ressource rType;
+			if(ressourceName.equals("Beer")){
+				rType = Ressource.BEER;
+			}
+			else if(ressourceName.equals("Sleep")){
+				rType = Ressource.SLEEP;
+			}
+			else if(ressourceName.equals("Coffee")){
+				rType = Ressource.COFFEE;
+			}
+			else if(ressourceName.equals("Cours")){
+				rType = Ressource.COURS;
+			}
+			else{
+				rType = Ressource.FOOD;
+			}
+			
+			ArrayList<RessourceCard> stolenCard = new ArrayList<RessourceCard>();
+			for(Player pl : players){
+				if(pl != currentPlayer){
+					int nbRessource = pl.getRessourceCards(rType);
+					for(int i=0 ; i<nbRessource ; i++){
+						pl.spendRessourceCard(rType);
+						stolenCard.add(new RessourceCard(rType));
+					}
+					
+				}
+			}
+			currentPlayer.getRessourceCards().addAll(stolenCard);
+			UpdateObserver("You have stolen " + stolenCard.size() +" cards to your opponents");
+			
 		}
 	}
 	
@@ -419,6 +548,9 @@ public class GameManager implements Observable{
 	}
 	public int getCurrentTurn() {
 		return currentTurn;
+	}
+	public boolean isDevCardPlayed(){
+		return devCardPlayed;
 	}
 	public boolean isPlacementPhase() {
 		return placementPhase;

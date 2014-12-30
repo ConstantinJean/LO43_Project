@@ -5,5 +5,5 @@ public abstract class DevelopmentCard {
 	/********************** Attributes **********************/
 		
 	/*********************** Methods ***********************/
-	public void play(){}
+	public DevelopmentCard(){}
 }

@@ -8,8 +8,4 @@ public class ElderCard extends DevelopmentCard {
 	public ElderCard(){
 		super();
 	}
-	
-	public void play(){
-		
-	}
 }

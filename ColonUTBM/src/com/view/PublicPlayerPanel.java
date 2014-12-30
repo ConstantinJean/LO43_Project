@@ -28,7 +28,9 @@ public class PublicPlayerPanel extends JPanel {
 		g.setColor(player.getColor());
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		g.setColor(Color.BLACK);
-		g.drawString(player.getName(), 2, 12);
-		g.drawString("VP : " + player.getVictoryPoint(), 2, 24);
+		g.drawString(player.getName(), 10, 20);
+		g.drawString("Victory point : " + player.getVictoryPoint(), 10, 35);
+		g.drawString("Ressource cards : " + player.getRessourceCards().size(), 10, 47);
+		g.drawString("Development cards : " + player.getDevelopmentCards().size(), 10, 59);
 	}
 }

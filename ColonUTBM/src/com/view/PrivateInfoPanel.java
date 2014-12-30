@@ -31,6 +31,7 @@ public class PrivateInfoPanel extends JPanel {
 		super();
 		
 		gameManager = gm;
+		controller = c;
 	}
 	
 
@@ -92,24 +93,19 @@ public class PrivateInfoPanel extends JPanel {
 			
 			
 			JButton newCard = new JButton(name);
-			newCard.setVisible(true);
 			newCard.setBounds(10, 120+((this.getHeight()-120)/devCards.size())*i, 130, (this.getHeight()-120)/devCards.size()-3);
-			newCard.addActionListener(controller);
 			
-			if(devCards.get(i).getClass() == ElderCard.class){
-				newCard.setActionCommand("ELDER_CARD");
-			}
-			else if(devCards.get(i).getClass() == DiscoveryCard.class){
-				newCard.setActionCommand("DISCOVERY_CARD");
-			}
-			else if(devCards.get(i).getClass() == MonopolyCard.class){
-				newCard.setActionCommand("MONOPOLY_CARD");
-			}
-			else if(devCards.get(i).getClass() == VictoryPointCard.class){
-				newCard.setEnabled(false);
+			if(gameManager.canEndTurn() && !gameManager.isDevCardPlayed()){
+				if(devCards.get(i).getClass() == VictoryPointCard.class){
+					newCard.setEnabled(false);
+				}
+				else{
+					newCard.setActionCommand(""+i);
+					newCard.addActionListener(controller);
+				}
 			}
 			else{
-				newCard.setActionCommand("BUILDING_CC_CARD");
+				newCard.setEnabled(false);
 			}
 			
 			this.add(newCard);

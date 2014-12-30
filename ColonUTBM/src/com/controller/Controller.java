@@ -50,6 +50,10 @@ public class Controller implements MouseListener, ActionListener, MouseMotionLis
 		case "BUY_DEV_CARD":
 			gm.buyDevCard();
 			break;
+		// pour les cartes de developpment, on connait la position de la carte dans la main du joueur
+		default:
+			gm.playDevCardAtPos(Integer.parseInt(e.getActionCommand()));
+			break;
 		}
 		
 	}
