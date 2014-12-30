@@ -6,9 +6,8 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import com.controller.Controller;
-import com.model.card.RessourceCard;
-import com.observer.Observable;
-import com.observer.Observer;
+import com.model.card.*;
+import com.observer.*;
 import com.view.ColorConstants;
 import com.view.Window;
 
@@ -245,6 +244,7 @@ public class GameManager implements Observable{
 	// la methode qui est appelé quand on ferme la fenetre de shop
 	public void shopClosed(){
 		buying = false;
+		canEndTurn = true;
 		UpdateObserver("");
 	}
 	
@@ -283,6 +283,36 @@ public class GameManager implements Observable{
 		currentPlayer.spendRessourceCard(Ressource.SLEEP);
 		
 		currentPlayer.setVictoryPoint(currentPlayer.getVictoryPoint()+1);
+	}
+	
+	public void buyDevCard(){
+		buying = false;
+		canEndTurn = true;
+		currentPlayer.spendRessourceCard(Ressource.COURS);
+		currentPlayer.spendRessourceCard(Ressource.COFFEE);
+		currentPlayer.spendRessourceCard(Ressource.SLEEP);
+		
+		int rand = (int)(Math.random()*25)+1;
+		if(rand <=5 ){
+			currentPlayer.getDevelopmentCards().add(new VictoryPointCard());
+			UpdateObserver("You drew a card of victory point");
+		}
+		else if(rand <=7){
+			currentPlayer.getDevelopmentCards().add(new BuildingCCCard());
+			UpdateObserver("You drew a card of buiding two CC");
+		}
+		else if(rand <= 9){
+			currentPlayer.getDevelopmentCards().add(new DiscoveryCard());
+			UpdateObserver("You drew a card Discovery");
+		}
+		else if(rand <= 11){
+			currentPlayer.getDevelopmentCards().add(new MonopolyCard());
+			UpdateObserver("You drew a card of Monopoly");
+		}
+		else{
+			currentPlayer.getDevelopmentCards().add(new ElderCard());
+			UpdateObserver("You drew a Elder");
+		}
 	}
 	
 	// ---- methodes privées ----

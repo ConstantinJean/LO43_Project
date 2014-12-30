@@ -1,12 +1,12 @@
 package com.model.card;
 
-public class Elder extends DevelopmentCard {
+public class ElderCard extends DevelopmentCard {
 
 	/********************** Attributes **********************/
 		
 	/*********************** Methods ***********************/
-	public Elder(){
-		
+	public ElderCard(){
+		super();
 	}
 	
 	public void play(){

@@ -47,6 +47,9 @@ public class Controller implements MouseListener, ActionListener, MouseMotionLis
 		case "BUY_UV_PLUS":
 			gm.buyUVplus();
 			break;
+		case "BUY_DEV_CARD":
+			gm.buyDevCard();
+			break;
 		}
 		
 	}

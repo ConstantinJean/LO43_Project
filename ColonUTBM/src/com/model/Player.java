@@ -3,7 +3,7 @@ package com.model;
 import java.awt.Color;
 import java.util.ArrayList;
 
-import com.model.card.RessourceCard;
+import com.model.card.*;
 import com.observer.*;
 
 public class Player implements Observable{
@@ -23,6 +23,7 @@ public class Player implements Observable{
 	
 	
 	private ArrayList<RessourceCard> ressourceCards;
+	private ArrayList<DevelopmentCard> developmentCards;
 	
 	private int VictoryPoint;
 	private int longestCursus;
@@ -37,6 +38,7 @@ public class Player implements Observable{
 		observers = new ArrayList<Observer>();
 		
 		ressourceCards = new ArrayList<RessourceCard>();
+		developmentCards = new ArrayList<DevelopmentCard>();
 		UVs = new ArrayList<UV>();
 		UVsPlus = new ArrayList<UVplus>();
 		CCs = new ArrayList<CC>();
@@ -54,6 +56,13 @@ public class Player implements Observable{
 			ressourceCards.add(new RessourceCard(Ressource.COFFEE));
 			ressourceCards.add(new RessourceCard(Ressource.COURS));
 			ressourceCards.add(new RessourceCard(Ressource.FOOD));
+		}
+		for(int i=0 ; i<1 ; i++){
+			developmentCards.add(new ElderCard());
+			developmentCards.add(new MonopolyCard());
+			developmentCards.add(new BuildingCCCard());
+			developmentCards.add(new VictoryPointCard());
+			developmentCards.add(new DiscoveryCard());
 		}
 	}
 	
@@ -96,6 +105,9 @@ public class Player implements Observable{
 				return;
 			}
 		}
+	}
+	public ArrayList<DevelopmentCard> getDevelopmentCards(){
+		return developmentCards;
 	}
 	public void addUV(UV UV){
 		UVs.add(UV);
