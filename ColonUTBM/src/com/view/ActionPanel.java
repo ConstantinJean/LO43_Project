@@ -17,14 +17,13 @@ public class ActionPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
 	
 	/********************** Attributes **********************/
-	public static final int Y_SIZE = 150;
+	public static final int Y_SIZE = 120;
 	
 	private GameManager gameManager;
 	
 	private JButton nextTurn;
 	private JButton buy;
-	private JButton tradePlayer;
-	private JButton tradeBankPort;
+	private JButton trade;
 		
 		
 	/*********************** Methods ***********************/
@@ -43,22 +42,16 @@ public class ActionPanel extends JPanel{
 		buy.setActionCommand("BUY");
 		buy.setEnabled(false);
 		
-		tradePlayer = new JButton("Trade with a player");
-		tradePlayer.addActionListener(c);
-		tradePlayer.setActionCommand("PLAYER_TRADE");
-		tradePlayer.setEnabled(false);
-		
-		tradeBankPort = new JButton("Trade with the bank");
-		tradeBankPort.addActionListener(c);
-		tradeBankPort.setActionCommand("TRADE_BANK_PORT");
-		tradeBankPort.setEnabled(false);
+		trade = new JButton("Trade");
+		trade.addActionListener(c);
+		trade.setActionCommand("TRADE");
+		trade.setEnabled(false);
 		
 		this.setPreferredSize(new Dimension(0, Y_SIZE));
 		
 		this.add(nextTurn);
 		this.add(buy);
-		this.add(tradePlayer);
-		this.add(tradeBankPort);
+		this.add(trade);
 		
 		
 	}
@@ -66,7 +59,7 @@ public class ActionPanel extends JPanel{
 	public void paintComponent(Graphics g){
 		nextTurn.setEnabled(gameManager.canEndTurn() && !gameManager.isBuying());
 		buy.setEnabled(gameManager.canEndTurn() && !gameManager.isBuying());
-		tradePlayer.setEnabled(gameManager.canEndTurn() && !gameManager.isBuying());
+		trade.setEnabled(gameManager.canEndTurn() && !gameManager.isBuying());
 		
 		
 		g.setColor(Color.GRAY);

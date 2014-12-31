@@ -14,7 +14,7 @@ public class LeftPanel extends JPanel{
 	 */
 	private static final long serialVersionUID = 1L;
 /********************** Attributes **********************/
-	public static final int X_SIZE = 150;
+	public static final int X_SIZE = 130;
 	
 	private BorderLayout layout;
 	

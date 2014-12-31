@@ -9,6 +9,8 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import com.model.*;
+import com.model.hexagon.ExternHexagon;
+import com.model.hexagon.Hexagon;
 import com.model.hexagon.InternHexagon;
 import com.view.MapPanel;
 import com.view.TransitionPanel;
@@ -50,8 +52,8 @@ public class Controller implements MouseListener, ActionListener, MouseMotionLis
 		case "BUY_DEV_CARD":
 			gm.buyDevCard();
 			break;
-		case "PLAYER_TRADE":
-			gm.UpdateObserver("playerTrade");
+		case "TRADE":
+			gm.UpdateObserver("trade");
 			break;
 		// pour les cartes de developpment, on connait la position de la carte dans la main du joueur
 		default:
@@ -105,6 +107,15 @@ public class Controller implements MouseListener, ActionListener, MouseMotionLis
 							po.setUV(newUV);
 							gm.getCurrentPlayer().addUV(newUV);
 							gm.setLastObjectPlaced(newUV);
+							
+							// si il y a un port sur l'UV, on l'ajoute aux ports disponible pour le joueur
+							for(Hexagon hex : gm.getMap().getHexagones()){
+								if(hex.getClass() == ExternHexagon.class
+										&& ((ExternHexagon)hex).getPort() != null
+										&& ((ExternHexagon)hex).getPort().getPoints().contains(po)){
+									gm.getCurrentPlayer().getPorts().add(((ExternHexagon)hex).getPort());
+								}
+							}
 							
 							gm.nextAction();
 						}

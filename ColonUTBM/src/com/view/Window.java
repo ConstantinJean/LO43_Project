@@ -57,8 +57,8 @@ public class Window extends JFrame implements Observer{
 		else if(msg.equals("shop")){
 			shopWindow = new ShopWindow(gameManager, controller);
 		}
-		else if(msg.equals("playerTrade")){
-			globalPanel.showPlayerTradePanel();
+		else if(msg.equals("trade")){
+			globalPanel.showTradePanel();
 		}
 		else{
 			globalPanel.showMainPanel();

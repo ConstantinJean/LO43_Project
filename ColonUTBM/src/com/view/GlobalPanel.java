@@ -17,7 +17,7 @@ public class GlobalPanel extends JPanel{
 	private MenuPanel menuPanel;
 	private MainPanel mainPanel;
 	private TransitionPanel transitionPanel;
-	private PlayerTradePanel playerTradePanel;
+	private TradePanel tradePanel;
 	
 
 	private CardLayout layout;
@@ -28,7 +28,7 @@ public class GlobalPanel extends JPanel{
 		menuPanel = new MenuPanel(gm, c);
 		mainPanel = new MainPanel(gm, c);
 		transitionPanel = new TransitionPanel(gm, c);
-		playerTradePanel = new PlayerTradePanel(gm);
+		tradePanel = new TradePanel(gm);
 		
 		layout = new CardLayout();
 		
@@ -37,7 +37,7 @@ public class GlobalPanel extends JPanel{
 		this.add(menuPanel, "menuPanel");
 		this.add(transitionPanel, "transitionPanel");
 		this.add(mainPanel, "mainPanel");
-		this.add(playerTradePanel, "playerTradePanel");
+		this.add(tradePanel, "tradePanel");
 		
 		layout.show(this, "menuPanel");
 	}
@@ -49,8 +49,8 @@ public class GlobalPanel extends JPanel{
 		layout.show(this, "mainPanel");
 	}
 	
-	public void showPlayerTradePanel(){
-		layout.show(this, "playerTradePanel");
+	public void showTradePanel(){
+		layout.show(this, "tradePanel");
 	}
 	
 	public MainPanel getMainPanel(){

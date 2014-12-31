@@ -93,7 +93,7 @@ public class PrivateInfoPanel extends JPanel {
 			
 			
 			JButton newCard = new JButton(name);
-			newCard.setBounds(10, 120+((this.getHeight()-120)/devCards.size())*i, 130, (this.getHeight()-120)/devCards.size()-3);
+			newCard.setBounds(10, 120+((this.getHeight()-120)/devCards.size())*i, 110, (this.getHeight()-120)/devCards.size()-3);
 			
 			if(gameManager.canEndTurn() && !gameManager.isDevCardPlayed()){
 				if(devCards.get(i).getClass() == VictoryPointCard.class){

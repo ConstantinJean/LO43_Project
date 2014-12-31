@@ -44,7 +44,7 @@ public class GameManager implements Observable{
 	
 	// ---- Main ----
 	public static void main(String[] args) {
-		GameManager gm = new GameManager(4);
+		GameManager gm = new GameManager(2);
 		Controller c = new Controller(gm);
 		Window w = new Window(gm, c);
 		
@@ -334,6 +334,7 @@ public class GameManager implements Observable{
 			canEndTurn = false;
 			movingLayaboutMate = true;
 			currentPlayer.getDevelopmentCards().remove(i);
+			currentPlayer.incrementOldestElder();
 			UpdateObserver("Click on an hexagon to move the layaboute mate");
 			
 		}

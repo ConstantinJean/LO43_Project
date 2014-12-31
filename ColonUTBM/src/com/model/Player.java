@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import com.model.card.*;
+import com.model.port.*;
 import com.observer.*;
 
 public class Player implements Observable{
@@ -20,6 +21,7 @@ public class Player implements Observable{
 	private ArrayList<UV> UVs;
 	private ArrayList<UVplus> UVsPlus;
 	private ArrayList<CC> CCs;
+	private ArrayList<Port> ports;
 	
 	
 	private ArrayList<RessourceCard> ressourceCards;
@@ -42,6 +44,7 @@ public class Player implements Observable{
 		UVs = new ArrayList<UV>();
 		UVsPlus = new ArrayList<UVplus>();
 		CCs = new ArrayList<CC>();
+		ports = new ArrayList<Port>();
 		
 		VictoryPoint=0;
 		longestCursus = 0;
@@ -50,20 +53,20 @@ public class Player implements Observable{
 		haveTheOldestElder = false;
 		
 		// -------- test -----------
-//		for(int i=0 ; i<50 ; i++){
-//			ressourceCards.add(new RessourceCard(Ressource.BEER));
-//			ressourceCards.add(new RessourceCard(Ressource.SLEEP));
-//			ressourceCards.add(new RessourceCard(Ressource.COFFEE));
-//			ressourceCards.add(new RessourceCard(Ressource.COURS));
-//			ressourceCards.add(new RessourceCard(Ressource.FOOD));
-//		}
-//		for(int i=0 ; i<1 ; i++){
-//			developmentCards.add(new ElderCard());
-//			developmentCards.add(new MonopolyCard());
-//			developmentCards.add(new BuildingCCCard());
-//			developmentCards.add(new VictoryPointCard());
-//			developmentCards.add(new DiscoveryCard());
-//		}
+		for(int i=0 ; i<50 ; i++){
+			ressourceCards.add(new RessourceCard(Ressource.BEER));
+			ressourceCards.add(new RessourceCard(Ressource.SLEEP));
+			ressourceCards.add(new RessourceCard(Ressource.COFFEE));
+			ressourceCards.add(new RessourceCard(Ressource.COURS));
+			ressourceCards.add(new RessourceCard(Ressource.FOOD));
+		}
+		for(int i=0 ; i<1 ; i++){
+			developmentCards.add(new ElderCard());
+			developmentCards.add(new MonopolyCard());
+			developmentCards.add(new BuildingCCCard());
+			developmentCards.add(new VictoryPointCard());
+			developmentCards.add(new DiscoveryCard());
+		}
 	}
 	
 	
@@ -85,6 +88,9 @@ public class Player implements Observable{
 	}
 	public ArrayList<CC> getCCs(){
 		return getCCs();
+	}
+	public ArrayList<Port> getPorts(){
+		return ports;
 	}
 	public ArrayList<RessourceCard> getRessourceCards(){
 		return ressourceCards;
@@ -132,6 +138,9 @@ public class Player implements Observable{
 	}
 	public int getOldestElder() {
 		return oldestElder;
+	}
+	public void incrementOldestElder(){
+		oldestElder++;
 	}
 	public boolean haveTheLongestCursus() {
 		return haveTheLongestCursus;
