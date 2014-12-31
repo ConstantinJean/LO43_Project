@@ -45,7 +45,7 @@ public class ActionPanel extends JPanel{
 		
 		tradePlayer = new JButton("Trade with a player");
 		tradePlayer.addActionListener(c);
-		tradePlayer.setActionCommand("TRADE_PLAYER");
+		tradePlayer.setActionCommand("PLAYER_TRADE");
 		tradePlayer.setEnabled(false);
 		
 		tradeBankPort = new JButton("Trade with the bank");
@@ -66,6 +66,7 @@ public class ActionPanel extends JPanel{
 	public void paintComponent(Graphics g){
 		nextTurn.setEnabled(gameManager.canEndTurn() && !gameManager.isBuying());
 		buy.setEnabled(gameManager.canEndTurn() && !gameManager.isBuying());
+		tradePlayer.setEnabled(gameManager.canEndTurn() && !gameManager.isBuying());
 		
 		
 		g.setColor(Color.GRAY);

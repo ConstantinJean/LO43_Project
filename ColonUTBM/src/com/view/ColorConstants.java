@@ -33,8 +33,8 @@ public abstract class ColorConstants {
 	public static final int CoursG = 17;
 	public static final int CoursB = 84;
 	
-	public static final int FoodR = 213;
-	public static final int FoodG = 200;
+	public static final int FoodR = 255;
+	public static final int FoodG = 255;
 	public static final int FoodB = 0;
 	
 	public static final int NoRessourceR = 200;

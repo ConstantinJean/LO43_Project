@@ -1,18 +1,12 @@
 package com.view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.util.ArrayList;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import com.controller.Controller;
 import com.model.GameManager;
-import com.model.Ressource;
-import com.model.card.*;
 
 public class LeftPanel extends JPanel{
 	/**

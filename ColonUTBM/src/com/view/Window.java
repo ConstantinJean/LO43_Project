@@ -48,24 +48,20 @@ public class Window extends JFrame implements Observer{
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 	}
-	
-	private void showTransitionPanel(boolean b){
-		globalPanel.showTransitionPanel(b);
-	}
-	private void showShop(){
-		shopWindow = new ShopWindow(gameManager, controller);
-	}
 
 	public void update(String msg) {
 		
 		if(msg.equals("trans")){
-			showTransitionPanel(true);
+			globalPanel.showTransitionPanel();
 		}
 		else if(msg.equals("shop")){
-			showShop();
+			shopWindow = new ShopWindow(gameManager, controller);
+		}
+		else if(msg.equals("playerTrade")){
+			globalPanel.showPlayerTradePanel();
 		}
 		else{
-			showTransitionPanel(false);
+			globalPanel.showMainPanel();
 			
 			if(shopWindow != null){
 				shopWindow.dispose();

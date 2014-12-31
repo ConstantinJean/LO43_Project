@@ -19,7 +19,7 @@ public class ShopWindow  extends JFrame{
 		super();
 		
 		setTitle("Shop");
-		setSize(700, 500);
+		setSize(600, 400);
 		setResizable(false);
 		
 		shopPanel = new ShopPanel(gm, c);

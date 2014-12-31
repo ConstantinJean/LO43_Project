@@ -17,6 +17,7 @@ public class GlobalPanel extends JPanel{
 	private MenuPanel menuPanel;
 	private MainPanel mainPanel;
 	private TransitionPanel transitionPanel;
+	private PlayerTradePanel playerTradePanel;
 	
 
 	private CardLayout layout;
@@ -27,6 +28,7 @@ public class GlobalPanel extends JPanel{
 		menuPanel = new MenuPanel(gm, c);
 		mainPanel = new MainPanel(gm, c);
 		transitionPanel = new TransitionPanel(gm, c);
+		playerTradePanel = new PlayerTradePanel(gm);
 		
 		layout = new CardLayout();
 		
@@ -35,22 +37,21 @@ public class GlobalPanel extends JPanel{
 		this.add(menuPanel, "menuPanel");
 		this.add(transitionPanel, "transitionPanel");
 		this.add(mainPanel, "mainPanel");
+		this.add(playerTradePanel, "playerTradePanel");
 		
 		layout.show(this, "menuPanel");
 	}
 	
-//	public void paintComponent(Graphics g){
-//		g.setColor(Color.DARK_GRAY);
-//		g.fillRect(0, 0, this.getWidth(), this.getHeight());
-//	}
-	
-	public void showTransitionPanel(boolean b){
-		if(b)
-			layout.show(this, "transitionPanel");
-		else
-			layout.show(this, "mainPanel");
+	public void showTransitionPanel(){
+		layout.show(this, "transitionPanel");
+	}
+	public void showMainPanel(){
+		layout.show(this, "mainPanel");
 	}
 	
+	public void showPlayerTradePanel(){
+		layout.show(this, "playerTradePanel");
+	}
 	
 	public MainPanel getMainPanel(){
 		return mainPanel;

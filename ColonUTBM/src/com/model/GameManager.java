@@ -79,7 +79,7 @@ public class GameManager implements Observable{
 				players.add(new Player("Player "+ (i+1), new Color(ColorConstants.p4R, ColorConstants.p4G, ColorConstants.p4B)));
 				break;
 			default :
-				players.add(new Player("Player "+ (i+1), Color.WHITE));
+				players.add(new Player("Player "+ (i+1), Color.GRAY));
 				break;
 			}
 			
@@ -103,8 +103,11 @@ public class GameManager implements Observable{
 		
 	}
 	
+	// -------- Méthodes publiques --------
+	
 	// la fontion qui démarre la partie
 	public void startGame(){
+		
 		// C'est le premier tour de jeu
 		currentTurn = 1;
 		
@@ -121,8 +124,8 @@ public class GameManager implements Observable{
 		}
 		currentPlayer = players.get(rand);
 		
-		UpdateObserver("the first player is "+ currentPlayer.getName()+ ", clic on a point to place an UV");
 		placingUV = true;
+		UpdateObserver("the first player is "+ currentPlayer.getName()+ ", clic on a point to place an UV");
 	}
 	
 	// Cette fonction sera appelé par le controller a chaque fois que l'action en cours sera terminé
