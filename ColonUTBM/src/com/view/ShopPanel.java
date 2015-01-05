@@ -80,10 +80,14 @@ public class ShopPanel extends JPanel{
 			// on fait la liste des point avec un CC adjacent
 			ArrayList<Point> possiblePoint = new ArrayList<Point>();
 			for(Point po : gameManager.getMap().getPoints()){
-				for(Path pa : gameManager.getMap().getPaths()){
-					for(Point endPo : pa.getEnd()){
-						if(endPo == po && pa.getCC() != null && pa.getCC().getPlayer()==gameManager.getCurrentPlayer()){
-							possiblePoint.add(po);
+				if(po.getUV() == null){
+					for(Path pa : gameManager.getMap().getPaths()){
+						for(Point endPo : pa.getEnd()){
+							if(endPo == po && pa.getCC() != null && pa.getCC().getPlayer()==gameManager.getCurrentPlayer()){
+								if(!possiblePoint.contains(po)){
+									possiblePoint.add(po);
+								}
+							}
 						}
 					}
 				}

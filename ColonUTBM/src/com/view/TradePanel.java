@@ -410,9 +410,9 @@ public class TradePanel extends JPanel implements ActionListener{
 			else
 				otherTrader = "the port";
 			
-			JOptionPane.showMessageDialog(null, currentPlayer.getName()+" have given "
+			JOptionPane.showMessageDialog(null, currentPlayer.getName()+" has given "
 			+nbRCurPlayer+" "+rCurPlayer.toString()+" to "+otherTrader+"\n"
-			+"and "+otherTrader+" have given "+nbROther+" "
+			+"and "+otherTrader+" has given "+nbROther+" "
 			+rOther.toString()+" to "+currentPlayer.getName());
 		}
 		

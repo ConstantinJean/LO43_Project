@@ -44,7 +44,7 @@ public class GameManager implements Observable{
 	
 	// ---- Main ----
 	public static void main(String[] args) {
-		GameManager gm = new GameManager(2);
+		GameManager gm = new GameManager(4);
 		Controller c = new Controller(gm);
 		Window w = new Window(gm, c);
 		
@@ -206,6 +206,7 @@ public class GameManager implements Observable{
 					canEndTurn = true;
 					UpdateObserver("");	
 				}
+				testVictory();
 				
 			}
 			// si le joueur vient de placer une UV
@@ -213,12 +214,14 @@ public class GameManager implements Observable{
 				placingUV = false;
 				canEndTurn = true;
 				UpdateObserver("");
+				testVictory();
 			}
 			// si le joueur vient de placer une UV**
 			else if (placingUVplus){
 				placingUVplus = false;
 				canEndTurn = true;
 				UpdateObserver("");
+				testVictory();
 			}
 			// si le joueur vient de déplacer le binome glandeur
 			else if(movingLayaboutMate){
@@ -226,7 +229,6 @@ public class GameManager implements Observable{
 				//on vole un joueur
 				canEndTurn = true;
 				steal();
-				UpdateObserver("");
 			}
 			// si on vient de commencer le tour d'un joueur :
 			else{
@@ -393,6 +395,9 @@ public class GameManager implements Observable{
 			currentPlayer.getDevelopmentCards().remove(i);
 			UpdateObserver("You can place 2 CC");
 		}
+		else if(card.getClass() == VictoryPointCard.class){
+			testVictory();
+		}
 	}
 	
 	// ---- methodes privées ----
@@ -514,6 +519,20 @@ public class GameManager implements Observable{
 			}
 		}
 		
+		
+	}
+	
+	private void testVictory(){
+		int realVicoryPoints = currentPlayer.getVictoryPoint();
+		for(DevelopmentCard devCard : currentPlayer.getDevelopmentCards()){
+			if(devCard.getClass() == VictoryPointCard.class){
+				realVicoryPoints ++;
+			}
+		}
+		
+		if(realVicoryPoints >= 10){
+			JOptionPane.showMessageDialog(null,currentPlayer.getName() + " won");
+		}
 		
 	}
 	
